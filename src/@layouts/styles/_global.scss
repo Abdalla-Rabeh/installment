@@ -1,0 +1,19 @@
+*,
+::before,
+::after {
+  box-sizing: inherit;
+  background-repeat: no-repeat;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+// Reset
+ol,
+ul {
+  list-style: none;
+}
+.btn-p{
+  background-color: #0088D0 !important;
+}

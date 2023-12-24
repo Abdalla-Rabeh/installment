@@ -1,0 +1,121 @@
+<script setup>
+import { useTheme } from 'vuetify'
+import logo from '@/assets/logo.svg?raw'
+import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
+import http from '../http'
+
+// import authV1MaskDark from '@/assets/images/pages/auth-v1-mask-dark.png'
+// import authV1MaskLight from '@/assets/images/pages/auth-v1-mask-light.png'
+// import authV1Tree2 from '@/assets/images/pages/auth-v1-tree-2.png'
+// import authV1Tree from '@/assets/images/pages/auth-v1-tree.png'
+
+const isPasswordVisible = ref(false)
+const vuetifyTheme = useTheme()
+const authThemeMask = computed(() => {
+  return vuetifyTheme.global.name.value === 'light' ? authV1MaskLight : authV1MaskDark
+})
+const form = ref({
+  userName: 'Abdallah',
+  password: '12312300',
+})
+const submitForm = async () => {
+  const response = await http.post('Auth/Login', form.value)
+  localStorage.setItem('token', response.data.data.token)
+}
+</script>
+
+<template>
+  <div
+    class="auth-wrapper d-flex align-center justify-center pa-4"
+    style="direction: rtl;"
+  >
+    <VCard
+      class="auth-card pa-4 pt-7"
+      max-width="448"
+    >
+      <VCardItem class="justify-center">
+        <template #prepend>
+          <div class="d-flex">
+            <img src="../assets/logo.svg">
+          </div>
+        </template>
+      </VCardItem>
+
+      <VCardText class="pt-2">
+        <h5 class="text-h5 font-weight-semibold mb-1">
+          تسجيل الدخول
+        </h5>
+        <p class="mb-0">
+          يرجي التاكد من ان اسم المستخدم وكلمه المرور صحيحين
+        </p>
+      </VCardText>
+
+      <VCardText>
+        <VForm @submit.prevent="submitForm">
+          <VRow>
+            <!-- username -->
+            <VCol cols="12">
+              <VTextField
+                v-model="form.userName"
+                label="اسم المستخدم"
+                type="text"
+              />
+            </VCol>
+
+            <!-- password -->
+            <VCol cols="12">
+              <VTextField
+                v-model="form.password"
+                label="كلمة المرور"
+                :type="isPasswordVisible ? 'text' : 'password'"
+                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                @click:append-inner="isPasswordVisible = !isPasswordVisible"
+              />
+
+              
+
+              <!-- login button -->
+              <VBtn
+                class="mt-3 btn-p"
+                block
+                type="submit"
+                
+                style="background-color: #0088D0 !important;"
+              >
+                تسجيل الدخول
+              </VBtn>
+            </VCol>
+            <VCol
+              cols="12"
+              class="d-flex align-center"
+            >
+              <VDivider />
+              <span class="mx-1">تواصل</span>
+              <span class="mx-1">معانا </span>
+              
+              <VDivider />
+            </VCol>
+
+            <!-- auth providers -->
+            <VCol
+              cols="12"
+              class="text-center"
+            >
+              <AuthProvider />
+            </VCol>
+          </VRow>
+        </VForm>
+      </VCardText>
+    </VCard>
+  </div>
+</template>
+
+<style lang="scss">
+@use "@core/scss/pages/page-auth.scss";
+</style>
+
+
+<route lang="yaml">
+  meta:
+    layout: blank
+</route>
