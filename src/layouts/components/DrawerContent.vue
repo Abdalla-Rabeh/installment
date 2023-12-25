@@ -23,12 +23,6 @@ const upgradeBanner = computed(() => {
     >
       <!-- ℹ️ You can also use img tag or VImg here -->
       <div v-html="logo" />
-
-      <Transition name="vertical-nav-app-title">
-        <h1 class="font-weight-semibold leading-normal text-xl text-uppercase">
-          Materio
-        </h1>
-      </Transition>
     </RouterLink>
   </div>
 

@@ -28,7 +28,7 @@ import http from '../http'
 // import authV1MaskLight from '@/assets/images/pages/auth-v1-mask-light.png'
 // import authV1Tree2 from '@/assets/images/pages/auth-v1-tree-2.png'
 // import authV1Tree from '@/assets/images/pages/auth-v1-tree.png'
-
+import router from '@/router'
 const isPasswordVisible = ref(false)
 const vuetifyTheme = useTheme()
 const authThemeMask = computed(() => {
@@ -41,6 +41,7 @@ const form = ref({
 const submitForm = async () => {
   const response = await http.post('Auth/Login', form.value)
   localStorage.setItem('token', response.data.data.token)
+  router.push("/")
 }
 </script>
 
