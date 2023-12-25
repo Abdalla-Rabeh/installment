@@ -1,22 +1,4 @@
-<script>
-export default {
-  mounted(){
-    console.log(this.$i18n)
-  },
-  methods: {
-    toggleLocale() {
 
-      this.$i18n.locale = this.$i18n.locale === 'en' ? 'ar' : 'en'
-      const rtlLogin = document.querySelector(".rtlLogin")
-      if (rtlLogin) {
-        rtlLogin.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
-      }
-    },
-
-  },
-  
-}
-</script>
 
 <script setup>
 import { useTheme } from 'vuetify'

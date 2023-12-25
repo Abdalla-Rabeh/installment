@@ -1,3 +1,32 @@
+<script>
+export default {
+  
+  methods: {
+    toggleLocale() {
+
+      this.$i18n.locale = this.$i18n.locale === 'en' ? 'ar' : 'en'
+      console.log(this.$i18n.locale )
+      const main = document.querySelector(".v-main")
+      const nav = document.querySelector(".layout-navbar")
+      
+      if (main) {
+        main.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
+      }
+      if (nav) {
+        nav.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
+      }
+      
+      const side = document.querySelector(".v-navigation-drawer")
+      if (side) {
+        side.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
+      }
+    },
+
+  },
+  
+}
+</script>
+
 <script setup>
 import DrawerContent from './DrawerContent.vue'
 import { VerticalNavLayout } from '@layouts'
@@ -16,20 +45,21 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
 
       
       <!-- <NavbarThemeSwitcher /> -->
-      <!--
-        <VBtn
+      
+      <VBtn
         icon
         variant="text"
         color="default"
         class="me-2"
         size="small"
-        >
+        @click="toggleLocale"
+      >
         <VIcon
-        icon="mdi-bell-outline"
-        size="24"
+          icon="mdi-language"
+          size="24"
         />
-        </VBtn> 
-      -->
+      </VBtn> 
+     
       <UserProfile />
     </template>
 

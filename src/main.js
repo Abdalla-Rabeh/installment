@@ -13,7 +13,7 @@ import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 const l18n = createI18n({
   locale: 'ar', // set locale
-  fallbackLocale: 'en', // set fallback locale
+  fallbackLocale: 'ar', // set fallback locale
   messages : {
     en,
     ar,
@@ -29,3 +29,4 @@ app.use(l18n)
 app.use(createPinia())
 app.use(router)
 app.mount('#app')
+

@@ -5,15 +5,37 @@ const {lgAndUp, mdAndDown} = useDisplay()
 const drawer = ref(lgAndUp.value)
 </script>
 
+<script>
+export default {
+  data() {
+    return {
+      drawer: false,
+    }
+  },
+  computed: {
+    drawerDirection() {
+      return this.$i18n.locale === 'ar' ? 'right' : 'left'
+    },
+    drawerStyles() {
+      return {
+        direction: this.$i18n.locale === 'ar' ? 'rtl' : 'ltr',
+        background: 'rgb(var(--v-theme-background))',
+      }
+    },
+  },
+
+}
+</script>
+
 <template>
   <VNavigationDrawer
     v-model="drawer"
     app
     floating
     sticky
-    location="right"
+    :location="drawerDirection"
     :absolute="false"
-    style="direction: rtl; background: rgb(var(--v-theme-background))"
+    :style="{drawerStyles, background: 'rgb(var(--v-theme-background))'}"
     class="layout-vertical-nav position-fixed"
   >
     <slot name="navigation-drawer-content" />
