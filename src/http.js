@@ -1,7 +1,7 @@
 import axios from "axios"
+import Swal from 'sweetalert2'
+import 'sweetalert2/src/sweetalert2.scss'
 
-// import { useToast } from "vue-toastification";
-// const toast = useToast();
 
 const instance = axios.create({
   baseURL: "http://akaminst-001-site1.gtempurl.com/api/",
@@ -29,20 +29,26 @@ instance.interceptors.request.use(
 )
 
 // Response Interceptor
-// instance.interceptors.response.use(
-//   response => {
-//     // Handle the successful response here
-//     return response
-//   },
-//   error => {
-//     let err = document.querySelector("#loaders4")
-//     if (error.response.data.msg) {
-//       toast.error(error.response.data.msg[0])
-//       err.style.display = "none"
-//     }
+instance.interceptors.response.use(
+  response => {
+    // Handle the successful response here
+    return response
+  },
+  error => {
+    console.log(error.response.data.errors)
     
-//     return Promise.reject(error)
-//   },
-// )
+    if (error.response.data.errors) {
+     
+      Swal.fire({
+        title: 'Error!',
+        text: `${error.response.data.errors}`,
+        icon: 'error',
+        
+      })
+    }
+    
+    return Promise.reject(error)
+  },
+)
 
 export default instance

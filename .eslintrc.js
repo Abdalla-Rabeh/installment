@@ -139,4 +139,5 @@ module.exports = {
       },alias: {'extensions': ['.ts', '.js', '.tsx', '.jsx', '.mjs'], 'map': [["@","./src"],["@core","./src/@core"],["@layouts","./src/@layouts"],["@configured-variables","./src/styles/variables/_template.scss"],["@axios","./src/plugins/axios"],["apexcharts","node_modules/apexcharts-clevision"]]},
     },
   },
+  
 }

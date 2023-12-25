@@ -66,7 +66,7 @@ const submitForm = async () => {
           <p>{{ $t('login') }}</p>
         </h5>
         <p class="mb-0">
-          {{ $t('loginalert') }}
+          {{ $t('loginalert') }} 
         </p>
       </VCardText>
 
@@ -126,9 +126,11 @@ const submitForm = async () => {
           </VRow>
         </VForm>
       </VCardText>
-      <button @click="toggleLocale">
+      <!--
+        <button @click="toggleLocale">
         {{ $i18n.locale === 'en' ? 'ar' : 'en' }}
-      </button>
+        </button> 
+      -->
     </VCard>
   </div>
 </template>
