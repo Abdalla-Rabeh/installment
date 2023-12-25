@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
   },
   extends: [
+    'plugin:vue/vue3-essential',
     '.eslintrc-auto-import.json',
     'plugin:vue/vue3-recommended',
     'plugin:import/recommended',
@@ -95,8 +96,8 @@ module.exports = {
     'promise/catch-or-return': 'off',
 
     // ESLint plugin vue
+    // 'vue/component-api-style': 'error',
     'vue/block-tag-newline': 'error',
-    'vue/component-api-style': 'error',
     'vue/component-name-in-template-casing': ['error', 'PascalCase', { registeredComponentsOnly: false }],
     'vue/custom-event-name-casing': ['error', 'camelCase', {
       ignores: [

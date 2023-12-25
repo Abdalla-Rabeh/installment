@@ -58,14 +58,7 @@ const upgradeBanner = computed(() => {
         icon: { icon: 'mdi-login' }
       }"
     />
-    <VerticalNavLink
-      :item="{
-        title: 'Register',
-        to: 'register',
-        target: '_blank',
-        icon: { icon: 'mdi-account-plus-outline' }
-      }"
-    />
+    
 
     <!-- ℹ️ This path doesn't exist so 404 route will catch this undefined path -->
     <VerticalNavLink

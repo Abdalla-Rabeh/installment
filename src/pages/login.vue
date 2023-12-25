@@ -1,3 +1,23 @@
+<script>
+export default {
+  mounted(){
+    console.log(this.$i18n)
+  },
+  methods: {
+    toggleLocale() {
+
+      this.$i18n.locale = this.$i18n.locale === 'en' ? 'ar' : 'en'
+      const rtlLogin = document.querySelector(".rtlLogin")
+      if (rtlLogin) {
+        rtlLogin.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
+      }
+    },
+
+  },
+  
+}
+</script>
+
 <script setup>
 import { useTheme } from 'vuetify'
 import logo from '@/assets/logo.svg?raw'
@@ -30,7 +50,7 @@ const submitForm = async () => {
     style="direction: rtl;"
   >
     <VCard
-      class="auth-card pa-4 pt-7"
+      class="auth-card pa-4 pt-7 rtlLogin"
       max-width="448"
     >
       <VCardItem class="justify-center">
@@ -43,10 +63,10 @@ const submitForm = async () => {
       
       <VCardText class="pt-2">
         <h5 class="text-h5 font-weight-semibold mb-1">
-          تسجيل الدخول
+          <p>{{ $t('login') }}</p>
         </h5>
         <p class="mb-0">
-          يرجي التاكد من ان اسم المستخدم وكلمه المرور صحيحين
+          {{ $t('loginalert') }}
         </p>
       </VCardText>
 
@@ -57,7 +77,7 @@ const submitForm = async () => {
             <VCol cols="12">
               <VTextField
                 v-model="form.userName"
-                label="اسم المستخدم"
+                :label="$t('labelLoginUserName')"
                 type="text"
               />
             </VCol>
@@ -66,7 +86,7 @@ const submitForm = async () => {
             <VCol cols="12">
               <VTextField
                 v-model="form.password"
-                label="كلمة المرور"
+                :label="$t('labelLoginPassWord')"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
@@ -82,7 +102,7 @@ const submitForm = async () => {
                 
                 style="background-color: #0088D0 !important;"
               >
-                تسجيل الدخول
+                {{ $t('login') }}
               </VBtn>
             </VCol>
             <VCol
@@ -90,8 +110,8 @@ const submitForm = async () => {
               class="d-flex align-center"
             >
               <VDivider />
-              <span class="mx-1">تواصل</span>
-              <span class="mx-1">معانا </span>
+              <span class="mx-1">{{ $t('communication') }}</span>
+              <span class="mx-1">{{ $t('WithMe') }} </span>
               
               <VDivider />
             </VCol>
@@ -106,16 +126,21 @@ const submitForm = async () => {
           </VRow>
         </VForm>
       </VCardText>
+      <button @click="toggleLocale">
+        {{ $i18n.locale === 'en' ? 'ar' : 'en' }}
+      </button>
     </VCard>
   </div>
 </template>
+
+
 
 <style lang="scss">
 @use "@core/scss/pages/page-auth.scss";
 </style>
 
-
 <route lang="yaml">
   meta:
     layout: blank
 </route>
+
