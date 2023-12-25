@@ -60,7 +60,6 @@ export default {
   </VAppBar>
   <VMain
     class="w-100"
-    style="direction: rtl;"
   >
     <div class="pa-6">
       <slot />

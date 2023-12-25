@@ -13,7 +13,7 @@ import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 const l18n = createI18n({
   locale: 'ar', // set locale
-  fallbackLocale: 'ar', // set fallback locale
+  fallbackLocale: 'en', // set fallback locale
   messages : {
     en,
     ar,

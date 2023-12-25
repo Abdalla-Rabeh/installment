@@ -5,9 +5,11 @@ export default {
     toggleLocale() {
 
       this.$i18n.locale = this.$i18n.locale === 'en' ? 'ar' : 'en'
-      console.log(this.$i18n.locale )
+      
       const main = document.querySelector(".v-main")
+      console.log(main)
       const nav = document.querySelector(".layout-navbar")
+      const side = document.querySelector(".v-navigation-drawer")
       
       if (main) {
         main.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
@@ -16,7 +18,6 @@ export default {
         nav.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
       }
       
-      const side = document.querySelector(".v-navigation-drawer")
       if (side) {
         side.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
       }
