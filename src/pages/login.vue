@@ -98,8 +98,6 @@ export default {
                 class="mt-3 btn-p"
                 block
                 type="submit"
-                
-                style="background-color: #0088D0 !important;"
               >
                 {{ $t('login') }}
               </VBtn>
