@@ -1,7 +1,8 @@
 
 <script>
 import { useTheme } from 'vuetify'
-import logo from '@/assets/logo.svg?raw'
+
+// import logo from '@/assets/logo.svg?raw'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import http from '../http'
 
