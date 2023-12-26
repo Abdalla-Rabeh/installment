@@ -35,10 +35,11 @@ instance.interceptors.response.use(
     return response
   },
   error => {
-    console.log(error.response.data.errors)
+    let err = document.querySelector("#loaders4")
+
     
     if (error.response.data.errors) {
-     
+      err.style.display = "none"
       Swal.fire({
         title: 'Error!',
         text: `${error.response.data.errors}`,

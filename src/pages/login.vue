@@ -1,6 +1,5 @@
 
-
-<script setup>
+<script>
 import { useTheme } from 'vuetify'
 import logo from '@/assets/logo.svg?raw'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
@@ -10,22 +9,38 @@ import http from '../http'
 // import authV1MaskLight from '@/assets/images/pages/auth-v1-mask-light.png'
 // import authV1Tree2 from '@/assets/images/pages/auth-v1-tree-2.png'
 // import authV1Tree from '@/assets/images/pages/auth-v1-tree.png'
-import router from '@/router'
-const isPasswordVisible = ref(false)
-const vuetifyTheme = useTheme()
-const authThemeMask = computed(() => {
-  return vuetifyTheme.global.name.value === 'light' ? authV1MaskLight : authV1MaskDark
-})
-const form = ref({
-  userName: 'Abdallah',
-  password: '12312300',
-})
-const submitForm = async () => {
-  const response = await http.post('Auth/Login', form.value)
-  localStorage.setItem('token', response.data.data.token)
-  router.push("/")
+export default {
+  components: {AuthProvider},
+  data(){
+    return{
+      loadingFormEdit:false,
+      isPasswordVisible:false,
+      formData:{
+        userName: 'Abdallah',
+        password: '12312300',
+        vuetifyTheme : useTheme(),
+      },
+    }
+  },
+  computed:{
+    authThemeMask(){
+      return vuetifyTheme.global.name.value === 'light' ? authV1MaskLight : authV1MaskDark
+    },
+    
+  },
+  methods:{
+    async submitForm () {
+      this.loadingFormEdit = true
+      const response = await http.post('Auth/Login', this.formData)
+      localStorage.setItem('token', response.data.data.token)
+      this.$router.push("/")
+      this.loadingFormEdit = false
+    },
+  },
 }
 </script>
+
+
 
 <template>
   <div
@@ -59,7 +74,7 @@ const submitForm = async () => {
             <!-- username -->
             <VCol cols="12">
               <VTextField
-                v-model="form.userName"
+                v-model="formData.userName"
                 :label="$t('labelLoginUserName')"
                 type="text"
               />
@@ -68,7 +83,7 @@ const submitForm = async () => {
             <!-- password -->
             <VCol cols="12">
               <VTextField
-                v-model="form.password"
+                v-model="formData.password"
                 :label="$t('labelLoginPassWord')"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
@@ -109,11 +124,19 @@ const submitForm = async () => {
           </VRow>
         </VForm>
       </VCardText>
-      <!--
-        <button @click="toggleLocale">
-        {{ $i18n.locale === 'en' ? 'ar' : 'en' }}
-        </button> 
-      -->
+      <div
+        v-if="loadingFormEdit"
+        id="loaders4"
+      >
+        <div id="Loading">
+          <div class="text-center">
+            <div class="rms-ripple">
+              <div />
+              <div />
+            </div>
+          </div>
+        </div>
+      </div>
     </VCard>
   </div>
 </template>
