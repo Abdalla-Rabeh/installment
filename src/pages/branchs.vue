@@ -1,11 +1,17 @@
-<script setup>
-const firstName = ref('')
-const lastName = ref('')
-const city = ref('')
-const country = ref('')
-const company = ref('')
-const email = ref('')
-const checkbox = ref(false)
+<script>
+export default {
+  data(){
+    return{
+      formData:{
+        name :"",
+        address :"",
+        phone :"",
+        currencyId :"",
+       
+      },
+    }
+  },
+}
 </script>
 
 <template>
@@ -26,9 +32,9 @@ const checkbox = ref(false)
                   md="3"
                 >
                   <VTextField
-                    v-model="name"
-                    label="name"
-                    placeholder="Name"
+                    v-model="formData.name"
+                    :label="$t('name')"
+                    :placeholder="$t('name')"
                   />
                 </VCol>
 
@@ -38,9 +44,9 @@ const checkbox = ref(false)
                   md="3"
                 >
                   <VTextField
-                    v-model="lastName"
-                    label="address"
-                    placeholder="Last Name"
+                    v-model="formData.address"
+                    :label="$t('address')"
+                    :placeholder="$t('address')"
                   />
                 </VCol>
 
@@ -50,9 +56,9 @@ const checkbox = ref(false)
                   md="3"
                 >
                   <VTextField
-                    v-model="email"
-                    label="phone"
-                    placeholder="Email"
+                    v-model="formData.phone"
+                    :label="$t('phone')"
+                    :placeholder="$t('phone')"
                   />
                 </VCol>
 
@@ -62,9 +68,9 @@ const checkbox = ref(false)
                   md="3"
                 >
                   <VTextField
-                    v-model="city"
-                    label="Currency"
-                    placeholder="Currency"
+                    v-model="formData.currencyId"
+                    :label="$t('currencyId')"
+                    :placeholder="$t('currencyId')"
                   />
                 </VCol>
 
@@ -75,7 +81,7 @@ const checkbox = ref(false)
                   class="d-flex gap-4"
                 >
                   <VBtn type="submit">
-                    Submit
+                    {{ $t('Add') }}
                   </VBtn>
 
                   <VBtn
@@ -83,7 +89,7 @@ const checkbox = ref(false)
                     color="secondary"
                     variant="tonal"
                   >
-                    Reset
+                    {{ $t('Reset') }}
                   </VBtn>
                 </VCol>
               </VRow>

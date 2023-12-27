@@ -5,5 +5,12 @@
     "labelLoginPassWord":"كلمة المرور",
     "communication": "تواصل",
     "WithMe": "معانا",
-    "branchs":"الفروع"
+    "branchs":"الفروع",
+    "name" :"الاسم",
+    "address" :"العنوان",
+    "phone" :"رقم التليفون",
+    "currencyId" :"العمله",
+    "Add":"اضافه",
+    "Reset": "اعادة تعيين",
+    "Dashboard":"لوحة التحكم"
 }

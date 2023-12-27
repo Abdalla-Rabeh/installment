@@ -30,7 +30,7 @@ const upgradeBanner = computed(() => {
   <ul>
     <VerticalNavLink
       :item="{
-        title: 'Dashboard',
+        title: $t('Dashboard'),
         to: 'index',
         icon: { icon: 'mdi-home-outline' }
       }"
