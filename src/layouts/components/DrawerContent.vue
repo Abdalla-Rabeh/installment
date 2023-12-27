@@ -22,7 +22,11 @@ const upgradeBanner = computed(() => {
       class="app-logo d-flex align-center gap-x-3 app-title-wrapper"
     >
       <!-- ℹ️ You can also use img tag or VImg here -->
-      <div v-html="logo" />
+      <img
+        src="@/assets/logo.svg"
+        alt="logo"
+        style="margin: auto 15px;"
+      >
     </RouterLink>
   </div>
 
