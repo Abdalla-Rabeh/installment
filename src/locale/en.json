@@ -4,5 +4,21 @@
     "labelLoginUserName":"UserName",
     "labelLoginPassWord":"PassWord",
     "communication": "communication",
-    "WithMe": "WithMe"
+    "WithMe": "WithMe",
+    "branchs":"branchs",
+    "name" :"Name",
+    "address" :"Address",
+    "phone" :"Phone",
+    "currencyId" :"Currency",
+    "Add":"Add",
+    "Reset": "Reset",
+    "Dashboard":"Dashboard",
+    "serach":"serach",
+    "prev":"prev",
+    "next":"next",
+    "Rowsperpage":"Rows per page",
+    "Lbranches":"List of branches",
+    "tableColumnNo":"No.",
+    "actions":"Actions"
+    
 }

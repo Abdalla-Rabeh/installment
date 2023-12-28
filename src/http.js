@@ -4,9 +4,15 @@ import 'sweetalert2/src/sweetalert2.scss'
 
 
 const instance = axios.create({
-  baseURL: "http://akaminst-001-site1.gtempurl.com/api/",
+  baseURL: "https://2062-41-44-50-187.ngrok-free.app/api/",
+
+  // https://0f8b-196-221-165-145.ngrok-free.app
+  // http://akaminst-001-site1.gtempurl.com
   headers: {
     "Content-Type": "application/json",
+    "Accept-Language":"en",
+
+
   },
 })
 const token = localStorage.getItem('token')
@@ -39,14 +45,15 @@ instance.interceptors.response.use(
 
     
     if (error.response.data.errors) {
-      err.style.display = "none"
       Swal.fire({
         title: 'Error!',
         text: `${error.response.data.errors}`,
         icon: 'error',
         
       })
+      err.style.display = "none"
     }
+    
     
     return Promise.reject(error)
   },

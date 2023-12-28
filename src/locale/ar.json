@@ -12,5 +12,12 @@
     "currencyId" :"العمله",
     "Add":"اضافه",
     "Reset": "اعادة تعيين",
-    "Dashboard":"لوحة التحكم"
+    "Dashboard":"لوحة التحكم",
+    "serach":"بحث",
+    "prev":"السابق",
+    "next":"التالي",
+    "Rowsperpage":"صفوف لكل صفحة",
+    "Lbranches":"قائمة الفروع",
+    "tableColumnNo":"رقم",
+    "actions":"الاوامر"
 }
