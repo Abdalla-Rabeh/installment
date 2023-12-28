@@ -5,3 +5,13 @@
 .custom-th-class{
   width:200px;
 }
+.btn-edit{
+  width: 200px;
+}
+.bg-danger{
+  &:hover{
+  color: #fff;
+
+  }
+  color: #fff;
+}

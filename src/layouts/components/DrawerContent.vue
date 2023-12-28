@@ -51,28 +51,34 @@ const upgradeBanner = computed(() => {
     <!-- 👉 Pages -->
     <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />
     
+    <!-- Customers -->
+    <VerticalNavLink
+      :item="{
+      title: $t('products'),
+      to: { path: '/products' },
+      icon: { icon: 'mdi-tag' }
+      }"
+      /> 
+      <VerticalNavLink
+      :item="{
+      title: $t('customers'),
+      to: { path: '/customers' },
+      icon: { icon: 'mdi-account-group' }
+      }"
+      /> 
     <VerticalNavLink
       :item="{
         title: $t('branchs'),
         to: 'branchs',
-        target: '_blank',
+        
         icon: { icon: 'mdi-source-branch' }
       }"
     /> 
    
     
 
-    <!-- ℹ️ This path doesn't exist so 404 route will catch this undefined path -->
-    <!--
-      <VerticalNavLink
-      :item="{
-      title: 'Error',
-      to: { path: '/error' },
-      target: '_blank',
-      icon: { icon: 'mdi-alert-circle-outline' }
-      }"
-      /> 
-    -->
+    
+    
 
     <!-- 👉 User Interface -->
     <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />

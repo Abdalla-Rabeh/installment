@@ -1,21 +1,16 @@
 <script>
 import http from '../http'
-import Multiselect from 'vue-multiselect'
+import axios from 'axios'
 export default {
-  components: {
-    Multiselect,
-  },
   data() {
     return {
       formData: {
         name: '',
         address: '',
         phone: '',
-        currencyId: null,
-       
+        currencyId: '',
+        countries: [],
       },
-      items: [],
-      
       columns: [
         {
           label: this.$t('tableColumnNo'),
@@ -24,20 +19,20 @@ export default {
         },
         {
           label: this.$t('name'),
-          field: 'name',
+          field: 'userId',
         },
         {
           label: this.$t('address'),
-          field: 'address',
+          field: 'id',
         },
         {
           label: this.$t('phone'),
-          field: 'phone',
+          field: 'title',
         },
         {
           label: this.$t('currencyId'),
 
-          field: 'currency.code',
+          field: 'completed',
         },
         {
           label: this.$t('actions'),
@@ -59,29 +54,14 @@ export default {
     },
   },
   mounted() {
-    this.GetCurrencies()
     this.getData()
   },
   methods: {
     async getData() {
-      await http.get(`Branches/GetBranches`).then(res => {
-        this.rows = res.data.data
-        
+      await axios.get(`https://jsonplaceholder.typicode.com/todos`).then(res => {
+        this.rows = res.data
       })
     },
-    async GetCurrencies() {
-      await http.get(`Settings/GetGeneralSettings`).then(res => {
-        this.items = res.data.data.currencyResponse.map(item => ({
-          name: item.code,   
-          value: item.id,   
-        }));
-        console.log(this.items , 'd' , res.data.data.currencyResponse)
-
-        
-      })
-    },
-    
-   
     editRow(data) {
       this.EditForm = true
     },
@@ -122,103 +102,26 @@ export default {
           }
         })
     },
+    add(){
+      this.$router.push('/add-customers')
+    }
   },
 }
 </script>
 
 <template>
   <div>
-    <VRow v-if="EditForm">
-      <VCol
-        cols="12"
-        md="12"
-      >
-        <!-- 👉 Horizontal Form -->
-        <VCard :title="$t('branchs')">
-          <VCardText>
-            <VForm @submit.prevent="edit">
-              <VRow>
-                <!-- 👉 First Name -->
-                <VCol
-                  cols="12"
-                  md="3"
-                >
-                  <VTextField
-                    v-model="formData.name"
-                    :label="$t('name')"
-                    :placeholder="$t('name')"
-                  />
-                </VCol>
-
-                <!-- 👉 Last Name -->
-                <VCol
-                  cols="12"
-                  md="3"
-                >
-                  <VTextField
-                    v-model="formData.address"
-                    :label="$t('address')"
-                    :placeholder="$t('address')"
-                  />
-                </VCol>
-
-                <!-- 👉 Email -->
-                <VCol
-                  cols="12"
-                  md="3"
-                >
-                  <VTextField
-                    v-model="formData.phone"
-                    :label="$t('phone')"
-                    :placeholder="$t('phone')"
-                  />
-                </VCol>
-
-                <!-- 👉 City -->
-                <VCol
-                  cols="12"
-                  md="3"
-                >
-                  <!--
-                    <VTextField
-                    v-model="formData.currencyId"
-                    :label="$t('currencyId')"
-                    :placeholder="$t('currencyId')"
-                    /> 
-                  -->
-
-                  <!-- <VSelect
-                    v-model="formData.currencyId"
-                    :label="$t('currencyId')"
-                    :options="items"
-                  /> -->
-                  <multiselect v-model="formData.currencyId" :options="items"></multiselect>
-                </VCol>
-
-                <VCol
-                  cols="12"
-                  class="d-flex gap-4"
-                >
-                  <VBtn
-                    type="submit"
-                    class="d-block m-auto btn-edit"
-                  >
-                    {{ $t('Edit') }}
-                  </VBtn>
-                </VCol>
-              </VRow>
-            </VForm>
-          </VCardText>
-        </VCard>
-      </VCol>
-    </VRow>
+    
     <div>
       <div class="mt-3">
         <div class="card custom-card">
-          <div class="card-header p-3 tx-medium my-auto tx-white custom-card-header border-bottom-0 bg-primary">
+          <div class="card-header p-3 tx-medium my-auto tx-white custom-card-header border-bottom-0 bg-primary d-flex justify-content-between">
             <h5 class="main-content-label on-secondary my-auto tx-medium">
-              {{ $t('Lbranches') }}
+              {{ $t('Lcustomers') }}
             </h5>
+            <div class="card-options">
+                <button class="btn bg-success" @click="add">{{$t('Addcustomer')}}</button>
+            </div>
           </div>
           <div class="card-body">
             <VueGoodTable
