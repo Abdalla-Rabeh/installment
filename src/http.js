@@ -4,13 +4,13 @@ import 'sweetalert2/src/sweetalert2.scss'
 
 
 const instance = axios.create({
-  baseURL: "http://akaminst-001-site1.gtempurl.com/api/",
+  baseURL: "http://instinst-001-site1.itempurl.com/api/",
 
   // https://0f8b-196-221-165-145.ngrok-free.app
   // http://akaminst-001-site1.gtempurl.com
   headers: {
     "Content-Type": "application/json",
-    "Accept-Language":"ar",
+    "Accept-Language":localStorage.getItem('lang') || 'en',
 
 
   },

@@ -36,5 +36,8 @@
     "quantity":"الكميه",
     "cost":"التكلفه",
     "customers":"العملاء",
-    "Addcustomer":"اضافه عميل"
+    "Addcustomer":"اضافه عميل",
+    "pages":"الصفحات",
+    "Lpages":"الاعدادت",
+    "of":"من"
 }

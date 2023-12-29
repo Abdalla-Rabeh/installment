@@ -17,7 +17,7 @@ import VueGoodTablePlugin from "vue-good-table-next"
 import "vue-good-table-next/dist/vue-good-table-next.css"
 import { createI18n } from 'vue-i18n'
 const l18n = createI18n({
-  locale: 'ar', // set locale
+  locale: localStorage.getItem('lang') || 'ar', // set locale
   fallbackLocale: 'en', // set fallback locale
   messages : {
     en,

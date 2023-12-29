@@ -35,7 +35,7 @@ export default {
     sticky
     :location="drawerDirection"
     :absolute="false"
-    :style="{drawerStyles, background: 'rgb(var(--v-theme-background))'}"
+    :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' , background: 'rgb(var(--v-theme-background))' }"
     class="layout-vertical-nav position-fixed"
   >
     <slot name="navigation-drawer-content" />
@@ -60,6 +60,8 @@ export default {
   </VAppBar>
   <VMain
     class="w-100"
+    :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }"
+
   >
     <div class="pa-6">
       <slot />

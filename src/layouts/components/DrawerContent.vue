@@ -16,7 +16,10 @@ const upgradeBanner = computed(() => {
 
 <template>
   <!-- 👉 Nav header -->
-  <div class="nav-header">
+  <div class="nav-header" 
+  :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }"
+  
+  >
     <RouterLink
       to="/"
       class="app-logo d-flex align-center gap-x-3 app-title-wrapper"
@@ -49,7 +52,7 @@ const upgradeBanner = computed(() => {
       /> 
     -->
     <!-- 👉 Pages -->
-    <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />
+    <VerticalNavSectionTitle :item="{ heading: $t('pages') }" />
     
     <!-- Customers -->
     <VerticalNavLink
@@ -81,7 +84,7 @@ const upgradeBanner = computed(() => {
     
 
     <!-- 👉 User Interface -->
-    <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
+    <VerticalNavSectionTitle :item="{ heading: $t('Lpages') }" />
 
     <!--
       <VerticalNavLink

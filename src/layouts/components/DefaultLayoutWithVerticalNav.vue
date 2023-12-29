@@ -5,11 +5,14 @@ export default {
     toggleLocale() {
 
       this.$i18n.locale = this.$i18n.locale === 'en' ? 'ar' : 'en'
+     
       
       const main = document.querySelector(".v-main")
-      console.log(main)
+      
+      
       const nav = document.querySelector(".layout-navbar")
       const side = document.querySelector(".v-navigation-drawer")
+      
       
       if (main) {
         main.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
@@ -21,6 +24,9 @@ export default {
       if (side) {
         side.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
       }
+      localStorage.setItem('lang', this.$i18n.locale);
+
+      window.location.reload();
     },
 
   },
@@ -39,7 +45,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
 </script>
 
 <template>
-  <VerticalNavLayout style="direction: rtl !important;">
+  <VerticalNavLayout :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }">
     <!-- 👉 navbar -->
     <template #navbar>
       <VSpacer />
@@ -65,7 +71,10 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
     </template>
 
     <!-- 👉 Drawer content -->
-    <template #navigation-drawer-content>
+    <template #navigation-drawer-content 
+    :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }"
+    
+    >
       <DrawerContent />
     </template>
 

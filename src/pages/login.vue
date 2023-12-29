@@ -19,14 +19,12 @@ export default {
       formData:{
         userName: 'Abdallah',
         password: '12312300',
-        vuetifyTheme : useTheme(),
+        
       },
     }
   },
   computed:{
-    authThemeMask(){
-      return vuetifyTheme.global.name.value === 'light' ? authV1MaskLight : authV1MaskDark
-    },
+    
     
   },
   methods:{
@@ -46,10 +44,11 @@ export default {
 <template>
   <div
     class="auth-wrapper d-flex align-center justify-center pa-4"
-    style="direction: rtl;"
+    
   >
     <VCard
-      class="auth-card pa-4 pt-7 rtlLogin"
+      class="auth-card pa-4 pt-7"
+      :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }"
       max-width="448"
     >
       <VCardItem class="justify-center">

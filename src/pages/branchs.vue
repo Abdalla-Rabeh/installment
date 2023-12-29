@@ -1,10 +1,7 @@
 <script>
 import http from '../http'
-import Multiselect from 'vue-multiselect'
 export default {
-  components: {
-    Multiselect,
-  },
+  
   data() {
     return {
       formData: {
@@ -70,15 +67,16 @@ export default {
       })
     },
     async GetCurrencies() {
-      await http.get(`Settings/GetGeneralSettings`).then(res => {
-        this.items = res.data.data.currencyResponse.map(item => ({
-          name: item.code,   
-          value: item.id,   
+      try {
+        const response = await http.get('Settings/GetGeneralSettings');
+        this.items = response.data.data.currencyResponse.map(item => ({
+          title: item.code,
+          value: item.id,
         }));
-        console.log(this.items , 'd' , res.data.data.currencyResponse)
-
-        
-      })
+        console.log(this.items, 'd', response.data.data.currencyResponse);
+      } catch (error) {
+        console.error('Error fetching currencies:', error);
+      }
     },
     
    
@@ -187,12 +185,14 @@ export default {
                     /> 
                   -->
 
-                  <!-- <VSelect
+                   <VSelect
+                   v-if="items.length > 0"
                     v-model="formData.currencyId"
                     :label="$t('currencyId')"
-                    :options="items"
-                  /> -->
-                  <multiselect v-model="formData.currencyId" :options="items"></multiselect>
+                    :items="items"
+                    
+                  /> 
+                  
                 </VCol>
 
                 <VCol
