@@ -12,7 +12,7 @@ export default {
        
       },
       items: [],
-      
+      id : null,
       columns: [
         {
           label: this.$t('tableColumnNo'),
@@ -81,10 +81,28 @@ export default {
     
    
     editRow(data) {
+      this.id = data.id
       this.EditForm = true
+      this.formData.name =  data.name
+      this.formData.address =  data.address
+      this.formData.phone =  data.phone
+      this.formData.currencyId =  data.currency.id
+     
     },
-    edit() {
-      this.EditForm = false
+     async edit() {
+      await http.put(`Branches/UpdateBranch` , {
+        id : this.id,
+        name: this.formData.name,
+        address: this.formData.address,
+        phone: this.formData.phone,
+        currencyId: this.formData.currencyId,
+
+
+
+      }).then(() => {
+        this.EditForm = false
+        this.getData()
+      })
     },
     async deleteRow(data, index) {
       const $t = this.$t // Capture the reference to this.$t
