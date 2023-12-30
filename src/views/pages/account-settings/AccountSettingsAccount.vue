@@ -3,9 +3,9 @@ import avatar1 from '@/assets/images/avatars/avatar-1.png'
 
 const accountData = {
   avatarImg: avatar1,
-  firstName: 'john',
-  lastName: 'Doe',
-  email: 'johnDoe@example.com',
+  firstName: 'Abdallah',
+  lastName: 'Rabeh',
+  email: 'abdallahCodeing@gmail.com',
   org: 'ThemeSelection',
   phone: '+1 (917) 543-9876',
   address: '123 Main St, New York, NY 10001',

@@ -45,7 +45,7 @@ const avatarBadgeProps = {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              Abdallah Rabeh
             </VListItemTitle>
             <VListItemSubtitle class="text-disabled">
               Admin

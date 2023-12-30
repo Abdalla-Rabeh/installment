@@ -1,20 +1,23 @@
-import axios from "axios"
-import Swal from 'sweetalert2'
-import 'sweetalert2/src/sweetalert2.scss'
+import axios from "axios";
+import Swal from 'sweetalert2';
+import 'sweetalert2/src/sweetalert2.scss';
 
+const currencyId = localStorage.getItem('currencyId');
 
 const instance = axios.create({
   baseURL: "http://instinst-001-site1.itempurl.com/api/",
-
+  
   // https://0f8b-196-221-165-145.ngrok-free.app
   // http://akaminst-001-site1.gtempurl.com
   headers: {
     "Content-Type": "application/json",
     "Accept-Language":localStorage.getItem('lang') || 'en',
+    "branchId" : currencyId,
 
 
   },
 })
+
 const token = localStorage.getItem('token')
 if (token) {
   instance.defaults.headers.common['Authorization'] = `Bearer ${token}`

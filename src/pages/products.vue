@@ -1,6 +1,5 @@
 <script>
 import http from '../http'
-import axios from 'axios'
 export default {
   data() {
     return {
@@ -8,8 +7,8 @@ export default {
         name: '',
         address: '',
         phone: '',
-        currencyId: '',
-        countries: [],
+       
+        
       },
       columns: [
         {
@@ -19,20 +18,20 @@ export default {
         },
         {
           label: this.$t('name'),
-          field: 'userId',
+          field: 'name',
         },
         {
-          label: this.$t('address'),
-          field: 'id',
+          label: this.$t('price'),
+          field: 'price',
         },
         {
           label: this.$t('phone'),
-          field: 'title',
+          field: 'priceBeforIncrease',
         },
         {
           label: this.$t('currencyId'),
 
-          field: 'completed',
+          field: 'count',
         },
         {
           label: this.$t('actions'),
@@ -43,7 +42,10 @@ export default {
       ],
       rows: [],
       EditForm: false,
-      AddForm:true
+      AddForm:true,
+      currentPage: 1,
+      pageSize: 10,
+      totalPages: 0,
     }
   },
   computed: {
@@ -53,15 +55,27 @@ export default {
         lineNumber: index + 1,
       }))
     },
+    
   },
   mounted() {
     this.getData()
   },
   methods: {
     async getData() {
-      await axios.get(`https://jsonplaceholder.typicode.com/todos`).then(res => {
-        this.rows = res.data
-      })
+      try {
+        const res = await http.post('Product/GetProducts', {
+          pageNumber: this.currentPage,
+          pageSize: this.pageSize,
+          name:""
+        });
+        this.rows = res.data.list;
+        console.log(res.data.list)
+       
+        console.log(this.rows);
+        this.totalPages = Math.ceil(res.data.total / this.pageSize);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
     editRow(data) {
       this.EditForm = true
@@ -103,6 +117,20 @@ export default {
           }
         })
     },
+    changePage(page) {
+      this.currentPage = page;
+      this.getData(); // Call the method to fetch data when the page changes
+    },
+    async add(){
+      try {
+        const res = await http.post('Product/AddProduct', this.formData).then((res)=>{
+          console.log(res.data);
+
+        })
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
   },
 }
 </script>
@@ -156,24 +184,7 @@ export default {
                 </VCol>
 
                 <!-- 👉 City -->
-                <VCol
-                  cols="12"
-                  md="3"
-                >
-                  <!--
-                    <VTextField
-                    v-model="formData.currencyId"
-                    :label="$t('currencyId')"
-                    :placeholder="$t('currencyId')"
-                    /> 
-                  -->
-
-                  <VSelect
-                    v-model="formData.currencyId"
-                    :label="$t('currencyId')"
-                    :options="countries"
-                  />
-                </VCol>
+                
 
                 <VCol
                   cols="12"
@@ -200,7 +211,7 @@ export default {
         <!-- 👉 Horizontal Form -->
         <VCard :title="$t('products')">
           <VCardText>
-            <VForm @submit.prevent="edit">
+            <VForm @submit.prevent="add">
               <VRow>
                 <!-- 👉 First Name -->
                 <VCol
@@ -247,26 +258,7 @@ export default {
                   />
                 </VCol>
 
-                <!-- 👉 City -->
-                <VCol
-                  cols="12"
-                  md="4"
-                >
-                  <!--
-                    <VTextField
-                    v-model="formData.currencyId"
-                    :label="$t('currencyId')"
-                    :placeholder="$t('currencyId')"
-                    /> 
-                  -->
-
-                  <VSelect
-                    v-model="formData.currencyId"
-                    :label="$t('branch')"
-                    
-                    :options="countries"
-                  />
-                </VCol>
+                
 
                 <VCol
                   cols="12"
@@ -338,9 +330,16 @@ export default {
                 </span>
               </template>
             </VueGoodTable>
+            <div class="pagination-container">
+              <pagination
+                :current="currentPage"
+                :total="totalPages"
+                @page-clicked="changePage"
+              ></pagination>
           </div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>

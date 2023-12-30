@@ -1,11 +1,23 @@
 <script>
+import http from '../../http.js'
 export default {
+  data(){
+    return{
+      items: [],
+      currencyId:null,
+      pageReloaded: false,
+    }
+  },
+  mounted() {
+    this.getData()
+  },
+  
   
   methods: {
     toggleLocale() {
-
+      
       this.$i18n.locale = this.$i18n.locale === 'en' ? 'ar' : 'en'
-     
+      
       
       const main = document.querySelector(".v-main")
       
@@ -25,10 +37,39 @@ export default {
         side.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
       }
       localStorage.setItem('lang', this.$i18n.locale);
-
+      
       window.location.reload();
     },
+    
+    async getData() {
+      await http.get(`Branches/GetBranches`).then(response => {
+        this.items = response.data.data.map(item => ({
+          title: item.name,
+          value: item.id,
+        })); 
+        const storedCurrencyId = localStorage.getItem('currencyId');
+        if (storedCurrencyId) {
+          console.log(this.items)
+          const selectedCurrency = this.items.find(item => item.value == storedCurrencyId);
+          if (selectedCurrency) {
+            // إذا كان هناك قيمة محفوظة، استخدمها كقيمة افتراضية
+            this.currencyId = selectedCurrency.value;
+          }
+        } 
 
+   
+      })
+    },
+    async handleChange() {
+      
+      localStorage.setItem('currencyId', this.currencyId);
+     
+      if (!this.pageReloaded) {
+        this.pageReloaded = true; 
+        window.location.reload();
+      }
+    },
+    
   },
   
 }
@@ -52,6 +93,13 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
 
       
       <!-- <NavbarThemeSwitcher /> -->
+      <VSelect
+      v-if="items.length > 0"
+      :label="$t('branch')"
+      :items="items"
+      v-model="currencyId"
+      @update:modelValue="handleChange"
+      /> 
       
       <VBtn
         icon
@@ -62,7 +110,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
         @click="toggleLocale"
       >
         <VIcon
-          icon="mdi-language"
+          icon="mdi-web"
           size="24"
         />
       </VBtn> 
