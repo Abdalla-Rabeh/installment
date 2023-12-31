@@ -17,11 +17,11 @@ const instance = axios.create({
 
   },
 })
-
 const token = localStorage.getItem('token')
 if (token) {
   instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
+
 
 // Request Interceptor
 instance.interceptors.request.use(

@@ -1,77 +1,72 @@
 <script>
 import http from '../../http.js'
 export default {
-  data(){
-    return{
+  data() {
+    return {
       items: [],
-      currencyId:null,
+      currencyId: null,
       pageReloaded: false,
     }
   },
   mounted() {
     this.getData()
   },
-  
-  
+
   methods: {
     toggleLocale() {
-      
       this.$i18n.locale = this.$i18n.locale === 'en' ? 'ar' : 'en'
-      
-      
-      const main = document.querySelector(".v-main")
-      
-      
-      const nav = document.querySelector(".layout-navbar")
-      const side = document.querySelector(".v-navigation-drawer")
-      
-      
+
+      const main = document.querySelector('.v-main')
+
+      const nav = document.querySelector('.layout-navbar')
+      const side = document.querySelector('.v-navigation-drawer')
+
       if (main) {
         main.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
       }
       if (nav) {
         nav.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
       }
-      
+
       if (side) {
         side.style.direction = this.$i18n.locale === 'ar' ? 'rtl' : 'ltr'
       }
-      localStorage.setItem('lang', this.$i18n.locale);
-      
-      window.location.reload();
+      localStorage.setItem('lang', this.$i18n.locale)
+
+      window.location.reload()
     },
-    
+
     async getData() {
       await http.get(`Branches/GetBranches`).then(response => {
         this.items = response.data.data.map(item => ({
           title: item.name,
           value: item.id,
-        })); 
-        const storedCurrencyId = localStorage.getItem('currencyId');
+        }))
+        const storedCurrencyId = localStorage.getItem('currencyId')
         if (storedCurrencyId) {
           console.log(this.items)
-          const selectedCurrency = this.items.find(item => item.value == storedCurrencyId);
+          const selectedCurrency = this.items.find(item => item.value == storedCurrencyId)
           if (selectedCurrency) {
             // إذا كان هناك قيمة محفوظة، استخدمها كقيمة افتراضية
-            this.currencyId = selectedCurrency.value;
+            this.currencyId = selectedCurrency.value
           }
-        } 
+        } else {
+        window.location.reload()
+          this.currencyId = this.items[0].value
+      localStorage.setItem('currencyId', this.currencyId)
 
-   
+        }
       })
     },
     async handleChange() {
-      
-      localStorage.setItem('currencyId', this.currencyId);
-     
+      localStorage.setItem('currencyId', this.currencyId)
+
       if (!this.pageReloaded) {
-        this.pageReloaded = true; 
-        window.location.reload();
+        this.pageReloaded = true
+        window.location.reload()
       }
     },
-    
   },
-  
 }
 </script>
 
@@ -91,16 +86,15 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
     <template #navbar>
       <VSpacer />
 
-      
       <!-- <NavbarThemeSwitcher /> -->
       <VSelect
-      v-if="items.length > 0"
-      :label="$t('branch')"
-      :items="items"
-      v-model="currencyId"
-      @update:modelValue="handleChange"
-      /> 
-      
+        v-if="items.length > 0"
+        :label="$t('branch')"
+        :items="items"
+        v-model="currencyId"
+        @update:modelValue="handleChange"
+      />
+
       <VBtn
         icon
         variant="text"
@@ -113,15 +107,15 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
           icon="mdi-web"
           size="24"
         />
-      </VBtn> 
-     
+      </VBtn>
+
       <UserProfile />
     </template>
 
     <!-- 👉 Drawer content -->
-    <template #navigation-drawer-content 
-    :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }"
-    
+    <template
+      #navigation-drawer-content
+      :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }"
     >
       <DrawerContent />
     </template>
@@ -141,7 +135,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
 <style lang="scss">
 .app-bar-search {
   .v-input__control {
-    width: 236px
+    width: 236px;
   }
 
   .v-field__outline__start {

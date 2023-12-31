@@ -121,8 +121,8 @@ export default {
         .then(result => {
           if (result.isConfirmed) {
             // User confirmed, proceed with the delete request
-            axios
-              .delete(`https://jsonplaceholder.typicode.com/todos/${data}`)
+            http
+              .delete(`Branches/DeleteBranch/${data}`)
               .then(() => {
                 this.$swal.fire({
                   title: $t('deleted'),

@@ -1,7 +1,9 @@
-<script setup>
+<script>
 import avatar1 from '@/assets/images/avatars/avatar-1.png'
-
-const avatarBadgeProps = {
+export default {
+  data(){
+    return{
+      avatarBadgeProps : {
   dot: true,
   location: 'bottom right',
   offsetX: 3,
@@ -9,6 +11,17 @@ const avatarBadgeProps = {
   color: 'success',
   bordered: true,
 }
+    }
+  },
+  methods:{
+    logout(){
+      localStorage.clear();
+      window.location.reload()
+      this.$router.push('/login')
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -110,7 +123,7 @@ const avatarBadgeProps = {
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem  @click="logout">
             <template #prepend>
               <VIcon
                 class="me-2"

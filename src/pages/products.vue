@@ -5,9 +5,9 @@ export default {
     return {
       formData: {
         name: '',
-        address: '',
-        phone: '',
-       
+        price: '',
+        priceBeforIncrease: '',
+        count:'',
         
       },
       columns: [
@@ -40,12 +40,23 @@ export default {
           tdClass: 'custom-th-class',
         },
       ],
-      rows: [],
       EditForm: false,
       AddForm:true,
+      rows: [],
       currentPage: 1,
-      pageSize: 10,
-      totalPages: 0,
+      pageSize: 1000000000,
+      paginationOptions:{
+      enabled: true,
+      mode: 'records',
+      position: 'top',
+      dropdownAllowAll: true,
+      nextLabel: this.$t('next'),
+      prevLabel: this.$t('prev'),
+      rowsPerPageLabel: this.$t('Rowsperpage'),
+      ofLabel: 'of',
+      pageLabel: 'page', // for 'pages' mode
+      allLabel: 'All',
+      },
     }
   },
   computed: {
@@ -69,13 +80,15 @@ export default {
           name:""
         });
         this.rows = res.data.list;
-        console.log(res.data.list)
-       
-        console.log(this.rows);
-        this.totalPages = Math.ceil(res.data.total / this.pageSize);
+        // this.totalPages = Math.ceil(res.data.total / this.pageSize);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    },
+    async handlePageChange(page) {
+      
+      this.currentPage = page;
+      await this.getData();
     },
     editRow(data) {
       this.EditForm = true
@@ -100,8 +113,8 @@ export default {
         .then(result => {
           if (result.isConfirmed) {
             // User confirmed, proceed with the delete request
-            axios
-              .delete(`https://jsonplaceholder.typicode.com/todos/${data}`)
+            http
+              .delete(`Product/DeleteProduct/${data}`)
               .then(() => {
                 this.$swal.fire({
                   title: $t('deleted'),
@@ -122,14 +135,24 @@ export default {
       this.getData(); // Call the method to fetch data when the page changes
     },
     async add(){
-      try {
-        const res = await http.post('Product/AddProduct', this.formData).then((res)=>{
-          console.log(res.data);
+        const res = await http.post('Product/AddProduct', {
+          name: this.formData.name,
+          price: this.formData.price,
+          priceBeforIncrease: this.formData.priceBeforIncrease,
+          count:this.formData.count,
+          productBranchRequests: [
+            {
+              branchId: localStorage.getItem('currencyId'),
+              isActive: true
+            }
+          ]
 
+        }).then(()=>{
+        
+          this.getData()
+          this.formData = {}
         })
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      
     }
   },
 }
@@ -231,7 +254,7 @@ export default {
                   md="4"
                 >
                   <VTextField
-                    v-model="formData.address"
+                    v-model="formData.priceBeforIncrease"
                     :label="$t('cost')"
                     :placeholder="$t('cost')"
                   />
@@ -241,7 +264,7 @@ export default {
                   md="4"
                 >
                   <VTextField
-                    v-model="formData.address"
+                    v-model="formData.price"
                     :label="$t('price')"
                     :placeholder="$t('price')"
                   />
@@ -252,7 +275,7 @@ export default {
                   md="4"
                 >
                   <VTextField
-                    v-model="formData.phone"
+                    v-model="formData.count"
                     :label="$t('quantity')"
                     :placeholder="$t('quantity')"
                   />
@@ -294,20 +317,8 @@ export default {
                 enabled: true,
                 placeholder: $t('serach'),
               }"
-              :pagination-options="{
-                enabled: true,
-                mode: 'records',
-                position: 'top',
-
-                dropdownAllowAll: true,
-                setCurrentPage: 2,
-                nextLabel: $t('next'),
-                prevLabel: $t('prev'),
-                rowsPerPageLabel: $t('Rowsperpage'),
-                ofLabel: 'of',
-                pageLabel: 'page', // for 'pages' mode
-                allLabel: 'All',
-              }"
+              :pagination-options="paginationOptions"
+              @on-page-change="handlePageChange"
             >
               <template #table-row="props">
                 <span v-if="props.column.field == 'actions'">
@@ -330,13 +341,8 @@ export default {
                 </span>
               </template>
             </VueGoodTable>
-            <div class="pagination-container">
-              <pagination
-                :current="currentPage"
-                :total="totalPages"
-                @page-clicked="changePage"
-              ></pagination>
-          </div>
+            
+
         </div>
       </div>
     </div>
