@@ -219,7 +219,7 @@ export default {
                 >
                   <VBtn
                     type="submit"
-                    class="d-block m-auto btn-edit"
+                    class="d-block m-auto btn-edit bg-success"
                   >
                     {{ $t('Edit') }}
                   </VBtn>
@@ -266,7 +266,7 @@ export default {
                 <span v-if="props.column.field == 'actions'">
                   <button
                     type="button"
-                    class="btn bg-warning on-secondary me-2"
+                    class="btn bg-success on-secondary me-2"
                     @click="editRow(props.row)"
                   >
                     {{ $t('Edit') }}

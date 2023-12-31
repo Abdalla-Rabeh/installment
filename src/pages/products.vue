@@ -3,7 +3,15 @@ import http from '../http'
 export default {
   data() {
     return {
+      id:null,
       formData: {
+        name: '',
+        price: '',
+        priceBeforIncrease: '',
+        count:'',
+        
+      },
+      updateData: {
         name: '',
         price: '',
         priceBeforIncrease: '',
@@ -91,10 +99,35 @@ export default {
       await this.getData();
     },
     editRow(data) {
+      this.AddForm = false
       this.EditForm = true
+      this.id = data.id
+      this.updateData.name = data.name
+      this.updateData.price = data.price
+      this.updateData.priceBeforIncrease = data.priceBeforIncrease
+      this.updateData.count = data.count
     },
-    edit() {
-      this.EditForm = false
+    async edit() {
+      
+      await http.put(`Product/UpdateProduct` , {
+        id : this.id,
+        name: this.updateData.name,
+        price: this.updateData.price,
+        priceBeforIncrease: this.updateData.priceBeforIncrease,
+        count: this.updateData.count,
+        productBranchRequests: [
+            {
+              branchId: localStorage.getItem('currencyId'),
+              isActive: true
+            }
+          ]
+
+
+      }).then(() => {
+        this.EditForm = false
+        this.AddForm = true
+        this.getData()
+      })
     },
     async deleteRow(data, index) {
       const $t = this.$t // Capture the reference to this.$t
@@ -166,17 +199,17 @@ export default {
         md="12"
       >
         <!-- 👉 Horizontal Form -->
-        <VCard :title="$t('branchs')">
+        <VCard :title="$t('products')">
           <VCardText>
             <VForm @submit.prevent="edit">
               <VRow>
                 <!-- 👉 First Name -->
                 <VCol
                   cols="12"
-                  md="3"
+                  md="4"
                 >
                   <VTextField
-                    v-model="formData.name"
+                    v-model="updateData.name"
                     :label="$t('name')"
                     :placeholder="$t('name')"
                   />
@@ -185,28 +218,36 @@ export default {
                 <!-- 👉 Last Name -->
                 <VCol
                   cols="12"
-                  md="3"
+                  md="4"
                 >
                   <VTextField
-                    v-model="formData.address"
-                    :label="$t('address')"
-                    :placeholder="$t('address')"
+                    v-model="updateData.priceBeforIncrease"
+                    :label="$t('cost')"
+                    :placeholder="$t('cost')"
                   />
                 </VCol>
-
+                <VCol
+                  cols="12"
+                  md="4"
+                >
+                  <VTextField
+                    v-model="updateData.price"
+                    :label="$t('price')"
+                    :placeholder="$t('price')"
+                  />
+                </VCol>
                 <!-- 👉 Email -->
                 <VCol
                   cols="12"
-                  md="3"
+                  md="4"
                 >
                   <VTextField
-                    v-model="formData.phone"
-                    :label="$t('phone')"
-                    :placeholder="$t('phone')"
+                    v-model="updateData.count"
+                    :label="$t('quantity')"
+                    :placeholder="$t('quantity')"
                   />
                 </VCol>
 
-                <!-- 👉 City -->
                 
 
                 <VCol
@@ -215,7 +256,7 @@ export default {
                 >
                   <VBtn
                     type="submit"
-                    class="d-block m-auto btn-edit"
+                    class="d-block m-auto btn-edit bg-success"
                   >
                     {{ $t('Edit') }}
                   </VBtn>
@@ -324,7 +365,7 @@ export default {
                 <span v-if="props.column.field == 'actions'">
                   <button
                     type="button"
-                    class="btn bg-warning on-secondary me-2"
+                    class="btn bg-success on-secondary me-2"
                     @click="editRow(props.row)"
                   >
                     {{ $t('Edit') }}
