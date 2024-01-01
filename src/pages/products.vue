@@ -147,7 +147,7 @@ export default {
           if (result.isConfirmed) {
             // User confirmed, proceed with the delete request
             http
-              .delete(`Product/DeleteProduct/${data}`)
+              .delete(`Product/DeleteProduct?productId=${data}`)
               .then(() => {
                 this.$swal.fire({
                   title: $t('deleted'),

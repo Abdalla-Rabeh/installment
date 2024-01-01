@@ -104,40 +104,40 @@ export default {
         this.getData()
       })
     },
-    async deleteRow(data, index) {
-      const $t = this.$t // Capture the reference to this.$t
+    // async deleteRow(data, index) {
+    //   const $t = this.$t // Capture the reference to this.$t
 
-      this.$swal
-        .fire({
-          title: $t('Areyousoreu'),
-          text: $t('youwont'),
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          cancelButtonText: $t('no'),
-          confirmButtonText: $t('yesDel'),
-        })
-        .then(result => {
-          if (result.isConfirmed) {
-            // User confirmed, proceed with the delete request
-            http
-              .delete(`Branches/DeleteBranch/${data}`)
-              .then(() => {
-                this.$swal.fire({
-                  title: $t('deleted'),
-                  text: $t('de'),
-                  icon: 'success',
-                })
-                this.rows.splice(index, 1)
-              })
-              .catch(error => {
-                // Handle error if the delete request fails
-                console.error('Error deleting:', error)
-              })
-          }
-        })
-    },
+    //   this.$swal
+    //     .fire({
+    //       title: $t('Areyousoreu'),
+    //       text: $t('youwont'),
+    //       icon: 'warning',
+    //       showCancelButton: true,
+    //       confirmButtonColor: '#3085d6',
+    //       cancelButtonColor: '#d33',
+    //       cancelButtonText: $t('no'),
+    //       confirmButtonText: $t('yesDel'),
+    //     })
+    //     .then(result => {
+    //       if (result.isConfirmed) {
+    //         // User confirmed, proceed with the delete request
+    //         http
+    //           .delete(`Branches/DeleteBranch?branchId=${data}`)
+    //           .then(() => {
+    //             this.$swal.fire({
+    //               title: $t('deleted'),
+    //               text: $t('de'),
+    //               icon: 'success',
+    //             })
+    //             this.rows.splice(index, 1)
+    //           })
+    //           .catch(error => {
+    //             // Handle error if the delete request fails
+    //             console.error('Error deleting:', error)
+    //           })
+    //       }
+    //     })
+    // },
   },
 }
 </script>
@@ -266,17 +266,17 @@ export default {
                 <span v-if="props.column.field == 'actions'">
                   <button
                     type="button"
-                    class="btn bg-success on-secondary me-2"
+                    class="btn bg-success on-secondary me-2 w-100"
                     @click="editRow(props.row)"
                   >
                     {{ $t('Edit') }}
                   </button>
-                  <button
+                  <!-- <button
                     class="btn bg-danger me-2"
                     @click="deleteRow(props.row.id, props.index)"
                   >
                     {{ $t('Delete') }}
-                  </button>
+                  </button> -->
                 </span>
                 <span v-else>
                   {{ props.formattedRow[props.column.field] }}
