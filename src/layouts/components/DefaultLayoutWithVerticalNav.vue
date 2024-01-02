@@ -6,10 +6,12 @@ export default {
       items: [],
       currencyId: null,
       pageReloaded: false,
+      username:null,
     }
   },
   mounted() {
     this.getData()
+    this.username = localStorage.getItem('users')
   },
 
   methods: {
@@ -84,7 +86,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
   <VerticalNavLayout :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }">
     <!-- 👉 navbar -->
     <template #navbar>
-      <!-- <p>{{$t('Hello') - user}}</p> -->
+      <p class="user-name">{{$t('Hello')}}  {{ username }}  <span>👋</span></p>
       <VSpacer />
       
 
