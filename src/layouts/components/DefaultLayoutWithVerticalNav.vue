@@ -84,7 +84,9 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
   <VerticalNavLayout :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }">
     <!-- 👉 navbar -->
     <template #navbar>
+      <!-- <p>{{$t('Hello') - user}}</p> -->
       <VSpacer />
+      
 
       <!-- <NavbarThemeSwitcher /> -->
       <VSelect

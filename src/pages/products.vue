@@ -29,16 +29,15 @@ export default {
           field: 'name',
         },
         {
+          label: this.$t('cost'),
+          field: 'priceBeforIncrease',
+        },
+        {
           label: this.$t('price'),
           field: 'price',
         },
         {
-          label: this.$t('phone'),
-          field: 'priceBeforIncrease',
-        },
-        {
           label: this.$t('currencyId'),
-
           field: 'count',
         },
         {

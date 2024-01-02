@@ -5,7 +5,7 @@ import { useTheme } from 'vuetify'
 // import logo from '@/assets/logo.svg?raw'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import http from '../http'
-import useStore from '../store/index.js'
+
 // import authV1MaskDark from '@/assets/images/pages/auth-v1-mask-dark.png'
 // import authV1MaskLight from '@/assets/images/pages/auth-v1-mask-light.png'
 // import authV1Tree2 from '@/assets/images/pages/auth-v1-tree-2.png'
@@ -31,15 +31,14 @@ export default {
     async submitForm () {
       this.loadingFormEdit = true
       await http.post('Auth/Login', this.formData).then((response)=>{
-        console.log( response.data.data.token);
+        
         localStorage.setItem('token', response.data.data.token)
+        localStorage.setItem('users', response.data.data.userName)
         // this.$router.push("/")
         
-          useStore.setToken('token');
+     
 
-          
-          const token = useStore.token;
-          console.log(token)
+         
 
         this.loadingFormEdit = false
       // window.location.reload()
