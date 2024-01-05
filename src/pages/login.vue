@@ -34,14 +34,9 @@ export default {
         
         localStorage.setItem('token', response.data.data.token)
         localStorage.setItem('users', response.data.data.userName)
-        // this.$router.push("/")
-        
-     
-
-         
-
+        this.$router.push("/")
+        window.location.reload()
         this.loadingFormEdit = false
-      // window.location.reload()
 
       })
     },
