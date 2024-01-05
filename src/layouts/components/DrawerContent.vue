@@ -62,20 +62,20 @@ const upgradeBanner = computed(() => {
       icon: { icon: 'mdi-tag' }
       }"
       /> 
-      <!-- <VerticalNavLink
-      :item="{
-      title: $t('customers'),
-      to: { path: '/customers' },
-      icon: { icon: 'mdi-account-group' }
-      }"
-      />  -->
-    <VerticalNavLink
+      <VerticalNavLink
       :item="{
         title: $t('branchs'),
         to: 'branchs',
         
         icon: { icon: 'mdi-source-branch' }
       }"
+    /> 
+    <VerticalNavLink
+    :item="{
+    title: $t('customers'),
+    to: { path: '/customers' },
+    icon: { icon: 'mdi-account-group' }
+    }"
     /> 
    
     

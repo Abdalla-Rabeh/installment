@@ -1,11 +1,16 @@
 import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '~pages'
+import showCustomer from '../views/details/show-customer.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    
     ...setupLayouts(routes),
+    {
+      path:"/customers/:id",
+      name:"showCustomer",
+      component:{showCustomer}
+    }
   ],
   scrollBehavior() {
     return { top: 0 }

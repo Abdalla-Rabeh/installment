@@ -1,15 +1,22 @@
 <script>
 import http from '../http'
-import axios from 'axios'
 export default {
   data() {
     return {
+      id:null,
       formData: {
         name: '',
-        address: '',
-        phone: '',
-        currencyId: '',
-        countries: [],
+        price: '',
+        priceBeforIncrease: '',
+        count:'',
+        
+      },
+      updateData: {
+        name: '',
+        price: '',
+        priceBeforIncrease: '',
+        count:'',
+        
       },
       columns: [
         {
@@ -19,30 +26,44 @@ export default {
         },
         {
           label: this.$t('name'),
-          field: 'userId',
+          field: 'name',
         },
         {
-          label: this.$t('address'),
-          field: 'id',
+          label: this.$t('numberOfActiveInstallements'),
+          field: 'numberOfActiveInstallements',
         },
         {
-          label: this.$t('phone'),
-          field: 'title',
+          label: this.$t('totalPaidPrice'),
+          field: 'totalPaidPrice',
         },
         {
-          label: this.$t('currencyId'),
-
-          field: 'completed',
+          label: this.$t('totalUnpaidPrice'),
+          field: 'totalUnpaidPrice',
         },
         {
           label: this.$t('actions'),
           field: 'actions',
           sortable: false,
-          tdClass: 'custom-th-class',
+          
         },
       ],
-      rows: [],
       EditForm: false,
+      AddForm:true,
+      rows: [],
+      currentPage: 1,
+      pageSize: 1000000000,
+      paginationOptions:{
+      enabled: true,
+      mode: 'records',
+      position: 'top',
+      dropdownAllowAll: true,
+      nextLabel: this.$t('next'),
+      prevLabel: this.$t('prev'),
+      rowsPerPageLabel: this.$t('Rowsperpage'),
+      ofLabel: 'of',
+      pageLabel: 'page', // for 'pages' mode
+      allLabel: 'All',
+      },
     }
   },
   computed: {
@@ -52,21 +73,60 @@ export default {
         lineNumber: index + 1,
       }))
     },
+    
   },
   mounted() {
     this.getData()
   },
   methods: {
     async getData() {
-      await axios.get(`https://jsonplaceholder.typicode.com/todos`).then(res => {
-        this.rows = res.data
-      })
+      try {
+        const res = await http.post('Clients/GetClients', {
+          pageNumber: this.currentPage,
+          pageSize: this.pageSize,
+          name:""
+        });
+        this.rows = res.data.list;
+        // this.totalPages = Math.ceil(res.data.total / this.pageSize);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async handlePageChange(page) {
+      
+      this.currentPage = page;
+      await this.getData();
     },
     editRow(data) {
+      this.AddForm = false
       this.EditForm = true
+      this.id = data.id
+      this.updateData.name = data.name
+      this.updateData.price = data.price
+      this.updateData.priceBeforIncrease = data.priceBeforIncrease
+      this.updateData.count = data.count
     },
-    edit() {
-      this.EditForm = false
+    async edit() {
+      
+      await http.put(`Product/UpdateProduct` , {
+        id : this.id,
+        name: this.updateData.name,
+        price: this.updateData.price,
+        priceBeforIncrease: this.updateData.priceBeforIncrease,
+        count: this.updateData.count,
+        productBranchRequests: [
+            {
+              branchId: localStorage.getItem('currencyId'),
+              isActive: true
+            }
+          ]
+
+
+      }).then(() => {
+        this.EditForm = false
+        this.AddForm = true
+        this.getData()
+      })
     },
     async deleteRow(data, index) {
       const $t = this.$t // Capture the reference to this.$t
@@ -85,8 +145,8 @@ export default {
         .then(result => {
           if (result.isConfirmed) {
             // User confirmed, proceed with the delete request
-            axios
-              .delete(`https://jsonplaceholder.typicode.com/todos/${data}`)
+            http
+              .delete(`Product/DeleteProduct?productId=${data}`)
               .then(() => {
                 this.$swal.fire({
                   title: $t('deleted'),
@@ -102,8 +162,32 @@ export default {
           }
         })
     },
-    add(){
-      this.$router.push('/add-customers')
+    changePage(page) {
+      this.currentPage = page;
+      this.getData(); // Call the method to fetch data when the page changes
+    },
+    async add(){
+        const res = await http.post('Product/AddProduct', {
+          name: this.formData.name,
+          price: this.formData.price,
+          priceBeforIncrease: this.formData.priceBeforIncrease,
+          count:this.formData.count,
+          productBranchRequests: [
+            {
+              branchId: localStorage.getItem('currencyId'),
+              isActive: true
+            }
+          ]
+
+        }).then(()=>{
+        
+          this.getData()
+          this.formData = {}
+        })
+      
+    },
+    details(id){
+      this.$router.push({name : "showCustomer", params: { id: id }})
     }
   },
 }
@@ -132,26 +216,21 @@ export default {
                 enabled: true,
                 placeholder: $t('serach'),
               }"
-              :pagination-options="{
-                enabled: true,
-                mode: 'records',
-                position: 'top',
+              :pagination-options="paginationOptions"
+              @on-page-change="handlePageChange"
 
-                dropdownAllowAll: true,
-                setCurrentPage: 2,
-                nextLabel: $t('next'),
-                prevLabel: $t('prev'),
-                rowsPerPageLabel: $t('Rowsperpage'),
-                ofLabel: 'of',
-                pageLabel: 'page', // for 'pages' mode
-                allLabel: 'All',
-              }"
             >
               <template #table-row="props">
                 <span v-if="props.column.field == 'actions'">
                   <button
+                    class="btn bg-info me-2"
+                    @click="details(props.row.id)"
+                  >
+                    {{ $t('details') }}
+                  </button>
+                  <button
                     type="button"
-                    class="btn bg-warning on-secondary me-2"
+                    class="btn bg-success on-secondary me-2"
                     @click="editRow(props.row)"
                   >
                     {{ $t('Edit') }}

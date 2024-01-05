@@ -40,5 +40,9 @@
     "pages":"الصفحات",
     "Lpages":"الاعدادت",
     "of":"من",
-    "Hello":"!مرحبا"
+    "Hello":"!مرحبا",
+    "details":"تفاصيل",
+    "numberOfActiveInstallements":"عدد الأقساط النشطة",
+    "totalPaidPrice":"السعر الإجمالي",
+    "totalUnpaidPrice":"السعر الإجمالي غير المدفوع"
 }
