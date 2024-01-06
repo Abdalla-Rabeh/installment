@@ -3,21 +3,7 @@ import http from '../http'
 export default {
   data() {
     return {
-      id:null,
-      formData: {
-        name: '',
-        price: '',
-        priceBeforIncrease: '',
-        count:'',
-        
-      },
-      updateData: {
-        name: '',
-        price: '',
-        priceBeforIncrease: '',
-        count:'',
-        
-      },
+      id: null,
       columns: [
         {
           label: this.$t('tableColumnNo'),
@@ -44,26 +30,40 @@ export default {
           label: this.$t('actions'),
           field: 'actions',
           sortable: false,
-          
         },
       ],
-      EditForm: false,
-      AddForm:true,
       rows: [],
       currentPage: 1,
-      pageSize: 1000000000,
-      paginationOptions:{
-      enabled: true,
-      mode: 'records',
-      position: 'top',
-      dropdownAllowAll: true,
-      nextLabel: this.$t('next'),
-      prevLabel: this.$t('prev'),
-      rowsPerPageLabel: this.$t('Rowsperpage'),
-      ofLabel: 'of',
-      pageLabel: 'page', // for 'pages' mode
-      allLabel: 'All',
+      pageSize: 10,
+      total: null,
+      paginationOptions: {
+        enabled: true,
+        mode: 'records',
+        position: 'top',
+        dropdownAllowAll: true,
+        nextLabel: this.$t('next'),
+        prevLabel: this.$t('prev'),
+        rowsPerPageLabel: this.$t('Rowsperpage'),
+        ofLabel: 'of',
+        pageLabel: 'page', // for 'pages' mode
+        allLabel: 'All',
       },
+      selectedItem: [
+        { value: null, title: this.$t('Allcustomers') },
+        { value: false, title: this.$t('Payingcustomers') },
+        { value: true, title: this.$t('Nonpayingcustomers') },
+      ],
+      fliterItem: [
+        { value: 'name', title: 'name' },
+        { value: 'phone', title: 'phone' },
+        { value: 'registerationNumberId', title: 'registerationNumberId' },
+      ],
+      hasActiveInstallement: true,
+      filter: 'name',
+      name: null,
+      phone: null,
+      registerationNumberId: null,
+      searchValue: '',
     }
   },
   computed: {
@@ -73,7 +73,17 @@ export default {
         lineNumber: index + 1,
       }))
     },
-    
+  },
+  watch: {
+    hasActiveInstallement() {
+      this.getData()
+    },
+    currentPage() {
+      this.getData()
+    },
+    filter() {
+      this.adjustFilter()
+    },
   },
   mounted() {
     this.getData()
@@ -84,18 +94,21 @@ export default {
         const res = await http.post('Clients/GetClients', {
           pageNumber: this.currentPage,
           pageSize: this.pageSize,
-          name:""
-        });
-        this.rows = res.data.list;
+          name: this.name,
+          phone: this.phone,
+          registerationNumberId: this.registerationNumberId,
+          hasActiveInstallement: this.hasActiveInstallement,
+        })
+        this.total = res.data.count
+        this.rows = res.data.list
         // this.totalPages = Math.ceil(res.data.total / this.pageSize);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
     },
     async handlePageChange(page) {
-      
-      this.currentPage = page;
-      await this.getData();
+      this.currentPage = page
+      await this.getData()
     },
     editRow(data) {
       this.AddForm = false
@@ -107,26 +120,25 @@ export default {
       this.updateData.count = data.count
     },
     async edit() {
-      
-      await http.put(`Product/UpdateProduct` , {
-        id : this.id,
-        name: this.updateData.name,
-        price: this.updateData.price,
-        priceBeforIncrease: this.updateData.priceBeforIncrease,
-        count: this.updateData.count,
-        productBranchRequests: [
+      await http
+        .put(`Product/UpdateProduct`, {
+          id: this.id,
+          name: this.updateData.name,
+          price: this.updateData.price,
+          priceBeforIncrease: this.updateData.priceBeforIncrease,
+          count: this.updateData.count,
+          productBranchRequests: [
             {
               branchId: localStorage.getItem('currencyId'),
-              isActive: true
-            }
-          ]
-
-
-      }).then(() => {
-        this.EditForm = false
-        this.AddForm = true
-        this.getData()
-      })
+              isActive: true,
+            },
+          ],
+        })
+        .then(() => {
+          this.EditForm = false
+          this.AddForm = true
+          this.getData()
+        })
     },
     async deleteRow(data, index) {
       const $t = this.$t // Capture the reference to this.$t
@@ -146,7 +158,7 @@ export default {
           if (result.isConfirmed) {
             // User confirmed, proceed with the delete request
             http
-              .delete(`Product/DeleteProduct?productId=${data}`)
+              .delete(`Clients/DeleteClient?clientId=${data}`)
               .then(() => {
                 this.$swal.fire({
                   title: $t('deleted'),
@@ -163,31 +175,59 @@ export default {
         })
     },
     changePage(page) {
-      this.currentPage = page;
-      this.getData(); // Call the method to fetch data when the page changes
+      this.currentPage = page
+      this.getData() // Call the method to fetch data when the page changes
     },
-    async add(){
-        const res = await http.post('Product/AddProduct', {
+    async add() {
+      const res = await http
+        .post('Product/AddProduct', {
           name: this.formData.name,
           price: this.formData.price,
           priceBeforIncrease: this.formData.priceBeforIncrease,
-          count:this.formData.count,
+          count: this.formData.count,
           productBranchRequests: [
             {
               branchId: localStorage.getItem('currencyId'),
-              isActive: true
-            }
-          ]
-
-        }).then(()=>{
-        
+              isActive: true,
+            },
+          ],
+        })
+        .then(() => {
           this.getData()
           this.formData = {}
         })
-      
     },
-    details(id){
-      this.$router.push({name : "showCustomer", params: { id: id }})
+    details(id) {
+      this.$router.push({ name: 'showCustomer', params: { id: id } })
+    },
+    Serach(){
+      this.resetPagination()
+      this.adjustFilter()
+      this.getData()
+    },
+    resetPagination(){
+      this.currentPage=1
+    },
+    adjustFilter(){
+      if (this.searchValue.length != 0) {
+        if (this.filter == 'name') {
+          this.name = this.searchValue
+          this.phone = null
+        this.registerationNumberId = null
+        }else if(this.filter == 'phone'){
+          this.name = null
+          this.phone = this.searchValue
+        this.registerationNumberId = null
+        }else if(this.filter == 'registerationNumberId'){
+          this.name = null
+          this.phone = null
+        this.registerationNumberId = this.searchValue
+        }
+      } else {
+        this.name = null
+        this.phone = null
+        this.registerationNumberId = null
+      }
     }
   },
 }
@@ -195,30 +235,72 @@ export default {
 
 <template>
   <div>
-    
     <div>
       <div class="mt-3">
         <div class="card custom-card">
-          <div class="card-header p-3 tx-medium my-auto tx-white custom-card-header border-bottom-0 bg-primary d-flex justify-content-between">
+          <div
+            class="card-header p-3 tx-medium my-auto tx-white custom-card-header border-bottom-0 bg-primary d-flex justify-content-between"
+          >
             <h5 class="main-content-label on-secondary my-auto tx-medium">
               {{ $t('Lcustomers') }}
             </h5>
             <div class="card-options">
-                <button class="btn bg-success" @click="add">{{$t('Addcustomer')}}</button>
+              <button
+                class="btn bg-success"
+                @click="add"
+              >
+                {{ $t('Addcustomer') }}
+              </button>
             </div>
           </div>
           <div class="card-body">
+            <VRow class="mb-3">
+              <VCol
+                cols="12"
+                md="3"
+              >
+                <v-select
+                  v-model="hasActiveInstallement"
+                  :label="$t('Select')"
+                  :items="selectedItem"
+                ></v-select>
+              </VCol>
+              <VCol
+                cols="12"
+                md="5"
+              >
+                <VTextField
+                  v-model="searchValue"
+                  :label="$t('serach')"
+                  :placeholder="$t('serach')"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="1"
+              >
+                <button class="btn bg-info" @click="Serach">{{ $t('serach') }}</button>
+              </VCol>
+              <VCol
+                cols="12"
+                md="3"
+              >
+                <v-select
+                  v-model="filter"
+                  :label="$t('Select')"
+                  :items="fliterItem"
+                ></v-select>
+              </VCol>
+            </VRow>
+
             <VueGoodTable
               :columns="columns"
               :rows="computedTableData"
               :select-options="{ enabled: false }"
               :search-options="{
-                enabled: true,
+                enabled: false,
                 placeholder: $t('serach'),
               }"
-              :pagination-options="paginationOptions"
-              @on-page-change="handlePageChange"
-
             >
               <template #table-row="props">
                 <span v-if="props.column.field == 'actions'">
@@ -247,6 +329,13 @@ export default {
                 </span>
               </template>
             </VueGoodTable>
+            <v-pagination
+              v-if="pageSize > 1"
+              v-model="currentPage"
+              class="my-4"
+              :length="Math.ceil(total / pageSize)"
+              @input="getData"
+            ></v-pagination>
           </div>
         </div>
       </div>

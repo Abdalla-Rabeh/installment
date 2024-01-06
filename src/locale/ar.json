@@ -43,6 +43,10 @@
     "Hello":"!مرحبا",
     "details":"تفاصيل",
     "numberOfActiveInstallements":"عدد الأقساط النشطة",
-    "totalPaidPrice":"السعر الإجمالي",
-    "totalUnpaidPrice":"السعر الإجمالي غير المدفوع"
+    "totalPaidPrice":" السعر الإجمالي المدفوع",
+    "totalUnpaidPrice":"السعر الإجمالي غير المدفوع",
+    "Select":"اختر",
+    "Allcustomers" : "كل العملاء",
+    "Payingcustomers": "عملاء مسددين",
+    "Nonpayingcustomers" : "عملاء غير مسددين"
 }
