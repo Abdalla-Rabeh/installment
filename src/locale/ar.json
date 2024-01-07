@@ -56,5 +56,6 @@
     "Customerdata":"بيانات العميل",
     "Warrantydata":"بيانات الضامن",
     "sponsorName":"اسم الضامن",
-    "sponsorPhone":"رقم هاتف الضامن"
+    "sponsorPhone":"رقم هاتف الضامن",
+    "cancel":"اغلاق"
 }

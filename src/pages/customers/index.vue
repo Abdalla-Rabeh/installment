@@ -3,6 +3,19 @@ import http from '../../http'
 export default {
   data() {
     return {
+      formData: {
+        cardTypeId: 1,
+        name: '',
+        phone: '',
+        sponsorName: '',
+        sponsorPhone: '',
+        statusId: null,
+        address: '',
+        job: '',
+        registerationNumber: '',
+      },
+      cardTypeResponse: [],
+      statusResponse: [],
       id: null,
       columns: [
         {
@@ -64,6 +77,10 @@ export default {
       phone: null,
       registerationNumberId: null,
       searchValue: '',
+      dialog: false,
+      notifications: false,
+      sound: true,
+      widgets: false,
     }
   },
   computed: {
@@ -87,6 +104,7 @@ export default {
   },
   mounted() {
     this.getData()
+    this.getCard()
   },
   methods: {
     async getData() {
@@ -110,29 +128,28 @@ export default {
       this.currentPage = page
       await this.getData()
     },
-    // editRow(data) {
-    //   this.$router.push({name : "customers-id", params: { id : data.id}})
-    // },
+    editRow(data) {
+      console.log(data)
+      this.dialog = true
+      this.formData.address = data.address
+      this.formData.balance = data.balance
+      this.formData.cardTypeId = data.cardType.id
+      this.formData.statusId = data.clientStatus.id
+      this.formData.job = data.job
+      this.formData.name = data.name
+      this.formData.numberOfActiveInstallements = data.numberOfActiveInstallements
+      this.formData.phone = data.phone
+      this.formData.registerationNumber = data.registerationNumber
+      this.formData.sponsorName = data.sponsorName
+      this.formData.sponsorPhone = data.sponsorPhone
+      this.formData.totalPaidPrice = data.totalPaidPrice
+      this.formData.totalUnpaidPrice = data.totalUnpaidPrice
+    },
     async edit() {
-      await http
-        .put(`Product/UpdateProduct`, {
-          id: this.id,
-          name: this.updateData.name,
-          price: this.updateData.price,
-          priceBeforIncrease: this.updateData.priceBeforIncrease,
-          count: this.updateData.count,
-          productBranchRequests: [
-            {
-              branchId: localStorage.getItem('currencyId'),
-              isActive: true,
-            },
-          ],
-        })
-        .then(() => {
-          this.EditForm = false
-          this.AddForm = true
-          this.getData()
-        })
+      await http.put('Clients/UpdateClient', this.formData).then(() => {
+        this.getData()
+        this.dialog = false
+      })
     },
     async deleteRow(data, index) {
       const $t = this.$t // Capture the reference to this.$t
@@ -172,41 +189,53 @@ export default {
       this.currentPage = page
       this.getData() // Call the method to fetch data when the page changes
     },
-     add() {
-       this.$router.push('customers/add')
+    add() {
+      this.$router.push('customers/add')
     },
     details(id) {
       this.$router.push({ name: 'showCustomer', params: { id: id } })
     },
-    Serach(){
+    Serach() {
       this.resetPagination()
       this.adjustFilter()
       this.getData()
     },
-    resetPagination(){
-      this.currentPage=1
+    resetPagination() {
+      this.currentPage = 1
     },
-    adjustFilter(){
+    adjustFilter() {
       if (this.searchValue.length != 0) {
         if (this.filter == 'name') {
           this.name = this.searchValue
           this.phone = null
-        this.registerationNumberId = null
-        }else if(this.filter == 'phone'){
+          this.registerationNumberId = null
+        } else if (this.filter == 'phone') {
           this.name = null
           this.phone = this.searchValue
-        this.registerationNumberId = null
-        }else if(this.filter == 'registerationNumberId'){
+          this.registerationNumberId = null
+        } else if (this.filter == 'registerationNumberId') {
           this.name = null
           this.phone = null
-        this.registerationNumberId = this.searchValue
+          this.registerationNumberId = this.searchValue
         }
       } else {
         this.name = null
         this.phone = null
         this.registerationNumberId = null
       }
-    }
+    },
+    async getCard() {
+      await http.get('Settings/GetGeneralSettings').then(res => {
+        this.cardTypeResponse = res.data.data.cardTypeResponse.map(item => ({
+          title: item.type,
+          value: item.id,
+        }))
+        this.statusResponse = res.data.data.statusResponse.map(item => ({
+          title: item.text,
+          value: item.id,
+        }))
+      })
+    },
   },
 }
 </script>
@@ -257,7 +286,12 @@ export default {
                 cols="12"
                 md="1"
               >
-                <button class="btn bg-info" @click="Serach">{{ $t('serach') }}</button>
+                <button
+                  class="btn bg-info"
+                  @click="Serach"
+                >
+                  {{ $t('serach') }}
+                </button>
               </VCol>
               <VCol
                 cols="12"
@@ -319,4 +353,187 @@ export default {
       </div>
     </div>
   </div>
+
+  <v-row justify="center">
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      :scrim="false"
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar
+          
+          color="primary"
+        >
+        <v-spacer></v-spacer>
+          <v-btn
+            icon
+            class="bg-primary on-secondary"
+            @click="dialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          
+          
+        </v-toolbar>
+        <VRow>
+      <VCol
+        cols="12"
+        md="12"
+      >
+        <!-- 👉 Horizontal Form -->
+        <VCard>
+          <VCardText>
+            <VForm @submit.prevent="edit">
+              <VRow>
+                <vCol
+                  cols="12"
+                  md="12"
+                >
+                  <div class="card custom-card">
+                    <div
+                      class="card-header p-3 tx-medium my-auto tx-white custom-card-header border-bottom-0 bg-primary d-flex justify-content-between"
+                    >
+                      <h5 class="main-content-label on-secondary my-auto tx-medium">
+                        {{ $t('Customerdata') }}
+                      </h5>
+                    </div>
+                  </div>
+                </vCol>
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.name"
+                    :label="$t('name')"
+                    :placeholder="$t('name')"
+                  />
+                </VCol>
+
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.phone"
+                    :label="$t('phone')"
+                    :placeholder="$t('phone')"
+                  />
+                </VCol>
+
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.job"
+                    :label="$t('job')"
+                    :placeholder="$t('job')"
+                  />
+                </VCol>
+
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.registerationNumber"
+                    :label="$t('registerationNumber')"
+                    :placeholder="$t('registerationNumber')"
+                  />
+                </VCol>
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.address"
+                    :label="$t('address')"
+                    :placeholder="$t('address')"
+                  />
+                </VCol>
+                
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VSelect
+                    v-model="formData.cardTypeId"
+                    :label="$t('cardTypeId')"
+                    :items="cardTypeResponse"
+                  />
+                </VCol>
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VSelect
+                    v-model="formData.statusId"
+                    :label="$t('statusId')"
+                    :items="statusResponse"
+                  />
+                </VCol>
+                <vCol
+                  cols="12"
+                  md="12"
+                >
+                  <div class="card custom-card">
+                    <div
+                      class="card-header p-3 tx-medium my-auto tx-white custom-card-header border-bottom-0 bg-primary d-flex justify-content-between"
+                    >
+                      <h5 class="main-content-label on-secondary my-auto tx-medium">
+                        {{ $t('Warrantydata') }}
+                      </h5>
+                    </div>
+                  </div>
+                </vCol>
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.sponsorName"
+                    :label="$t('sponsorName')"
+                    :placeholder="$t('sponsorName')"
+                  />
+                </VCol>
+
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.sponsorPhone"
+                    :label="$t('sponsorPhone')"
+                    :placeholder="$t('sponsorPhone')"
+                  />
+                </VCol>
+                <VCol
+                  cols="12"
+                  class="d-flex gap-4"
+                >
+                  <VBtn
+                    type="submit"
+                    class="d-block m-auto btn-edit"
+                  >
+                    {{ $t('Edit') }}
+                  </VBtn>
+                </VCol>
+              </VRow>
+            </VForm>
+          </VCardText>
+        </VCard>
+      </VCol>
+    </VRow>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
+<style>
+.dialog-bottom-transition-enter-active,
+.dialog-bottom-transition-leave-active {
+  transition: transform 0.2s ease-in-out;
+}
+</style>
