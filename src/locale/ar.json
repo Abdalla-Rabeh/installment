@@ -48,5 +48,13 @@
     "Select":"اختر",
     "Allcustomers" : "كل العملاء",
     "Payingcustomers": "عملاء مسددين",
-    "Nonpayingcustomers" : "عملاء غير مسددين"
+    "Nonpayingcustomers" : "عملاء غير مسددين",
+    "registerationNumber":"الرقم القومي",
+    "job":"الوظيفة",
+    "cardTypeId":"اختار نوع البنك",
+    "statusId":"الحالة",
+    "Customerdata":"بيانات العميل",
+    "Warrantydata":"بيانات الضامن",
+    "sponsorName":"اسم الضامن",
+    "sponsorPhone":"رقم هاتف الضامن"
 }

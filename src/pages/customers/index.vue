@@ -1,5 +1,5 @@
 <script>
-import http from '../http'
+import http from '../../http'
 export default {
   data() {
     return {
@@ -54,9 +54,9 @@ export default {
         { value: true, title: this.$t('Nonpayingcustomers') },
       ],
       fliterItem: [
-        { value: 'name', title: 'name' },
-        { value: 'phone', title: 'phone' },
-        { value: 'registerationNumberId', title: 'registerationNumberId' },
+        { value: 'name', title: this.$t('name') },
+        { value: 'phone', title: this.$t('phone') },
+        { value: 'registerationNumberId', title: this.$t('registerationNumber') },
       ],
       hasActiveInstallement: true,
       filter: 'name',
@@ -178,24 +178,8 @@ export default {
       this.currentPage = page
       this.getData() // Call the method to fetch data when the page changes
     },
-    async add() {
-      const res = await http
-        .post('Product/AddProduct', {
-          name: this.formData.name,
-          price: this.formData.price,
-          priceBeforIncrease: this.formData.priceBeforIncrease,
-          count: this.formData.count,
-          productBranchRequests: [
-            {
-              branchId: localStorage.getItem('currencyId'),
-              isActive: true,
-            },
-          ],
-        })
-        .then(() => {
-          this.getData()
-          this.formData = {}
-        })
+     add() {
+       this.$router.push('customers/add')
     },
     details(id) {
       this.$router.push({ name: 'showCustomer', params: { id: id } })
