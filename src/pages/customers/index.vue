@@ -354,14 +354,14 @@ export default {
     </div>
   </div>
 
-  <v-row justify="center">
+  <v-row justify="center" >
     <v-dialog
       v-model="dialog"
       fullscreen
       :scrim="false"
       transition="dialog-bottom-transition"
     >
-      <v-card>
+      <v-card :style="{ direction: $i18n.locale === 'ar' ? 'rtl' : 'ltr' }">
         <v-toolbar
           
           color="primary"
