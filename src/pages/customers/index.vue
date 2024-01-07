@@ -110,15 +110,9 @@ export default {
       this.currentPage = page
       await this.getData()
     },
-    editRow(data) {
-      this.AddForm = false
-      this.EditForm = true
-      this.id = data.id
-      this.updateData.name = data.name
-      this.updateData.price = data.price
-      this.updateData.priceBeforIncrease = data.priceBeforIncrease
-      this.updateData.count = data.count
-    },
+    // editRow(data) {
+    //   this.$router.push({name : "customers-id", params: { id : data.id}})
+    // },
     async edit() {
       await http
         .put(`Product/UpdateProduct`, {
