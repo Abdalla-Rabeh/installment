@@ -71,7 +71,7 @@ export default {
         { value: 'phone', title: this.$t('phone') },
         { value: 'registerationNumberId', title: this.$t('registerationNumber') },
       ],
-      hasActiveInstallement: true,
+      hasActiveInstallement: null,
       filter: 'name',
       name: null,
       phone: null,
@@ -131,6 +131,7 @@ export default {
     editRow(data) {
       console.log(data)
       this.dialog = true
+      this.id = data.id
       this.formData.address = data.address
       this.formData.balance = data.balance
       this.formData.cardTypeId = data.cardType.id
@@ -146,7 +147,10 @@ export default {
       this.formData.totalUnpaidPrice = data.totalUnpaidPrice
     },
     async edit() {
-      await http.put('Clients/UpdateClient', this.formData).then(() => {
+      await http.put('Clients/UpdateClient', {
+        ...this.formData,
+        id : this.id
+      }).then(() => {
         this.getData()
         this.dialog = false
       })

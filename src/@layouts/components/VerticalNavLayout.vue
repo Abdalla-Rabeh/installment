@@ -67,7 +67,10 @@ export default {
       <slot />
     </div>
   </VMain>
-  <!-- footer soon -->
+  <VFooter app>
+    <slot name="footer" />
+
+  </VFooter>
 </template>
 
 <style lang="scss">
