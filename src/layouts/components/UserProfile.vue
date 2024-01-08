@@ -31,7 +31,7 @@ export default {
       color="primary"
       variant="tonal"
     >
-      <VImg :src="avatar1" />
+      <VImg src="https://lh3.googleusercontent.com/ogw/ANLem4aCTNmYm9s73JWufoFASFQoa7SzMvb9oTH6BaU=s32-c-mo" />
 
       <!-- SECTION Menu -->
       <VMenu
@@ -51,7 +51,7 @@ export default {
                     size="40"
                     variant="tonal"
                   >
-                    <VImg :src="avatar1" />
+                    <VImg src="https://lh3.googleusercontent.com/ogw/ANLem4aCTNmYm9s73JWufoFASFQoa7SzMvb9oTH6BaU=s32-c-mo" />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>
