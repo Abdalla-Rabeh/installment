@@ -197,7 +197,7 @@ export default {
       this.$router.push('customers/add')
     },
     details(id) {
-      this.$router.push({ name: 'showCustomer', params: { id: id } })
+      this.$router.push({name :"customers-details" , params: { details: id } })
     },
     Serach() {
       this.resetPagination()
