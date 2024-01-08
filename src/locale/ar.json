@@ -57,5 +57,11 @@
     "Warrantydata":"بيانات الضامن",
     "sponsorName":"اسم الضامن",
     "sponsorPhone":"رقم هاتف الضامن",
-    "cancel":"اغلاق"
+    "cancel":"اغلاق",
+    "ReadMore":"عرض المزيد",
+    "Offerinstallments":"عرض الاقساط",
+    "Organizinganother":"تنظيم عقد قسط اخر",
+    "totalInitialPrice":"مقدم القسط"
+    
+    
 }
