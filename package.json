@@ -28,6 +28,7 @@
         "unplugin-vue-define-options": "^0.6.2",
         "vue": "^3.2.37",
         "vue-chartjs": "^4.1.1",
+        "vue-demi": "^0.14.6",
         "vue-flatpickr-component": "9.0.6",
         "vue-good-links": "^0.0.3",
         "vue-good-table-next": "^0.2.1",
