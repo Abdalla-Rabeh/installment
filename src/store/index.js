@@ -1,13 +1,10 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-export const useStore = defineStore('storeId', {
+export const GetClient = defineStore('ClientDataShera', {
   state: () => ({
-    token: null,
+    ClientData: {},
+    text:"Hi"
   }),
-  actions: {
-    setToken(token) {
-      this.token = token;
-    },
-  },
+  
 });
 

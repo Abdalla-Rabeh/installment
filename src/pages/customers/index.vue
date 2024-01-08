@@ -1,8 +1,10 @@
 <script>
 import http from '../../http'
+import {GetClient} from '../../store/index.js'
 export default {
   data() {
     return {
+      store : GetClient(),
       formData: {
         cardTypeId: 1,
         name: '',
@@ -81,6 +83,7 @@ export default {
       notifications: false,
       sound: true,
       widgets: false,
+      
     }
   },
   computed: {
@@ -119,6 +122,7 @@ export default {
         })
         this.total = res.data.count
         this.rows = res.data.list
+        
         // this.totalPages = Math.ceil(res.data.total / this.pageSize);
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -196,8 +200,11 @@ export default {
     add() {
       this.$router.push('customers/add')
     },
-    details(id) {
-      this.$router.push({name :"customers-details" , params: { details: id } })
+    details(data) {
+      this.store.ClientData = data
+      console.log(this.store.ClientData)
+      console.log(this.store)
+      this.$router.push({name :"customers-details" , params: { details: data.id } })
     },
     Serach() {
       this.resetPagination()
@@ -246,6 +253,7 @@ export default {
 
 <template>
   <div>
+    
     <div>
       <div class="mt-3">
         <div class="card custom-card">
@@ -322,7 +330,7 @@ export default {
                 <span v-if="props.column.field == 'actions'">
                   <button
                     class="btn bg-info me-2"
-                    @click="details(props.row.id)"
+                    @click="details(props.row)"
                   >
                     {{ $t('details') }}
                   </button>
@@ -358,7 +366,7 @@ export default {
     </div>
   </div>
 
-  <v-row justify="center" >
+  <v-row justify="center">
     <v-dialog
       v-model="dialog"
       fullscreen
@@ -534,10 +542,14 @@ export default {
       </v-card>
     </v-dialog>
   </v-row>
+ 
 </template>
-<style>
+<style scoped>
 .dialog-bottom-transition-enter-active,
 .dialog-bottom-transition-leave-active {
   transition: transform 0.2s ease-in-out;
+}
+.pls{
+  display: none;
 }
 </style>

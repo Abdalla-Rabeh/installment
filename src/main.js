@@ -10,8 +10,8 @@ import { loadFonts } from '@/plugins/webfontloader'
 import router from '@/router'
 import '@/styles/styles.scss'
 import '@core/scss/index.scss'
-// import pinia from './store/index';
-
+import { createPinia } from 'pinia';
+const pinia = createPinia();
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { createApp } from 'vue'
 import VueGoodTablePlugin from "vue-good-table-next"
@@ -36,7 +36,7 @@ app.use(vuetify)
 app.use(VueSweetalert2);
 app.use(l18n)
 app.use(VueGoodTablePlugin)
-// app.use(pinia)
+app.use(pinia)
 
 app.use(router)
 app.mount('#app')

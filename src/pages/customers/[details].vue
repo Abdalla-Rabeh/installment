@@ -1,13 +1,43 @@
 <script>
+import { GetClient } from '../../store/index.js'
 export default {
-  
+  data() {
+    return {
+      store: GetClient(),
+    }
+  },
 }
 </script>
 
 <template>
-  hi
+  <VCard>
+    <div class="container pls mt-2" v-if="store.ClientData">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="p-2 font-weight-bold">{{ $t('name') }} : {{ store.ClientData.name }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('address') }} : {{ store.ClientData.address }}</div>
+          <div class="p-2 font-weight-bold">{{$t ("cardTypeId")}} : {{ store.ClientData.cardType && store.ClientData.cardType.type }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('statusId') }} : {{ store.ClientData.clientStatus && store.ClientData.clientStatus.text }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('job') }} : {{ store.ClientData.job }}</div>
+        </div>
+        <div class="col-lg-4">
+          <div class="p-2 font-weight-bold">{{ $t('registerationNumber') }} : {{ store.ClientData.registerationNumber }}</div>
+          <div class="p-2 font-weight-bold">
+            {{ $t('numberOfActiveInstallements') }} : {{ store.ClientData.numberOfActiveInstallements }}
+          </div>
+          <div class="p-2 font-weight-bold">{{ $t('totalPaidPrice') }} : {{ store.ClientData.totalPaidPrice }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('totalUnpaidPrice') }} : {{ store.ClientData.totalUnpaidPrice }}</div>
+          
+        </div>
+        <div class="col-lg-4">
+          <div class="p-2 font-weight-bold">{{ $t('sponsorName') }} : {{ store.ClientData.sponsorName }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('sponsorPhone') }} : {{ store.ClientData.sponsorPhone }}</div>
+  
+        </div>
+      </div>
+      
+    </div>
+  </VCard>
 </template>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
