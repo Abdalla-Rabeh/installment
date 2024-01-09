@@ -12,6 +12,7 @@ export default {
   },
   mounted() {
     this.getData()
+    console.log(this.$route.params);
   },
   methods: {
     async getData() {
@@ -23,7 +24,10 @@ export default {
       })
     },
     details(id){
-      console.log(id)
+    this.$router.push({name :"customers-contract" , params: { contract: id } })
+    },
+    addContract(){
+      this.$router.push({name :"customers-contract" , params: { contract: this.$route.params.details } })
     }
   },
 }
@@ -94,7 +98,7 @@ export default {
         </tr>
       </tbody>
     </v-table>
-    <button class="btn bg-primary d-block m-auto mb-4 mt-3">{{ $t('Organizinganother') }}</button>
+    <button class="btn bg-primary d-block m-auto mb-4 mt-3" @click="addContract()">{{ $t('Organizinganother') }}</button>
   </VCard>
 </template>
 
