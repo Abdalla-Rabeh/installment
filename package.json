@@ -6,7 +6,8 @@
         "build": "npm run build:icons && vite build",
         "preview": "vite preview --port 5050",
         "lint": "eslint . -c .eslintrc.js --fix --ext .ts,.js,.vue,.tsx,.jsx",
-        "build:icons": "node src/@iconify/build-icons.js"
+        "build:icons": "node src/@iconify/build-icons.js",
+        "deploy":"git subtree push --prefix dist origin gh-page"
     },
     "dependencies": {
         "@casl/ability": "^6.2.0",
