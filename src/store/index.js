@@ -3,7 +3,12 @@ import { defineStore } from 'pinia';
 export const GetClient = defineStore('ClientDataShera', {
   state: () => ({
     ClientData: {},
-    text:"Hi"
+  }),
+  
+});
+export const Products = defineStore('products', {
+  state: () => ({
+    ProductsData: {},
   }),
   
 });

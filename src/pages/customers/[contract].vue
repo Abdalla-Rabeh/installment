@@ -1,5 +1,6 @@
 <script>
 import http from '../../http'
+import { Products } from '../../store/index.js'
 export default {
   data() {
     return {
@@ -7,18 +8,23 @@ export default {
         ClientId: this.$route.params.contract,
         ProductId: null,
         CreatedDate: new Date().toISOString().substr(0, 10),
-        InitialPrice: 3000000,
-        NumberOfMonths: 12,
-        InstallmentPercentage: 30,
-        FinalPrice: 100,
+        InitialPrice: 0,
+        NumberOfMonths: 10,
+        InstallmentPercentage: 0,
+        FinalPrice: 0,
         Notes: 'ملاحظات',
         InstallementImgsFiles: [],
       },
+      Products: Products(),
       cardTypeResponse: [],
       statusResponse: [],
       items: [],
       currentPage: 1,
       pageSize: 1000000000,
+      SelectItemCost: 0,
+      SelectItemPrice: 0,
+      InstallmentPrice:0,
+      checked: false,
     }
   },
   computed: {
@@ -35,20 +41,39 @@ export default {
     this.getData()
   },
   watch: {
+    
     'formData.ProductId'(v) {
-      console.log(v)
+      const selectedProduct = this.Products.ProductsData.find(it => it.id === v)
+      this.SelectItemCost = selectedProduct.priceBeforIncrease
+      this.SelectItemPrice = selectedProduct.price
+      
+      if(v === null){
+        this.checked = false
+      } else {
+        this.checked = true
+
+      }
+    },
+    SelectItemPrice(v) {
+      this.formData.FinalPrice = v * (1 + this.formData.InstallmentPercentage / 100)
+    },
+    "formData.InstallmentPercentage"(v){
+      this.formData.FinalPrice = this.SelectItemPrice * (1 + v / 100)
+    },
+    "formData.InitialPrice"(v){
+      this.InstallmentPrice = (this.formData.FinalPrice-v)/this.formData.NumberOfMonths
+    },
+    "formData.NumberOfMonths"(v){
+      this.InstallmentPrice = (this.formData.FinalPrice - this.formData.InitialPrice)/v
+    },
+    InstallmentPrice(v){
+      this.formData.InitialPrice=this.formData.FinalPrice-v*this.formData.NumberOfMonths
+    },
+    "formData.FinalPrice"(v){
+      this.InstallmentPrice = (v - this.formData.InitialPrice)/this.formData.NumberOfMonths
     },
   },
   methods: {
-    async addClient() {
-      await http
-        .post('Installements/AddInstallement', {
-          ...this.formData,
-        })
-        .then(() => {
-          this.$router.push('/customers')
-        })
-    },
     async addClient() {
       const formData = new FormData()
       formData.append('ProductId', this.formData.ProductId)
@@ -57,7 +82,6 @@ export default {
       formData.append('InitialPrice', this.formData.InitialPrice)
       formData.append('NumberOfMonths', this.formData.NumberOfMonths)
       formData.append('InstallmentPercentage', this.formData.InstallmentPercentage)
-      formData.append('FinalPrice', this.formData.FinalPrice)
       formData.append('Notes', this.formData.Notes)
       for (let i = 0; i < this.formData.InstallementImgsFiles.length; i++) {
         formData.append(
@@ -68,15 +92,15 @@ export default {
       }
 
       try {
-      
-        await http.post('Installements/AddInstallement', formData)
+        await http.post('Installements/AddInstallement', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
 
-      
         this.$router.push('/customers')
-      } 
-      catch (error) {
+      } catch (error) {
         console.error('Error adding client:', error)
-        
       }
     },
 
@@ -87,10 +111,13 @@ export default {
           pageSize: this.pageSize,
           name: '',
         })
+        this.Products.ProductsData = res.data.list
+        console.log(this.Products.ProductsData)
         this.items = res.data.list.map(item => ({
           title: item.name,
           value: item.id,
         }))
+        console.log(this.items)
         // this.totalPages = Math.ceil(res.data.total / this.pageSize);
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -137,94 +164,141 @@ export default {
                     :items="items"
                   ></v-autocomplete>
                 </VCol>
-
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    type="date"
-                    v-model="formData.CreatedDate"
-                    :label="$t('CreatedDate')"
-                    :placeholder="$t('CreatedDate')"
-                  />
-                </VCol>
-
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.InitialPrice"
-                    :label="$t('InitialPrice')"
-                    :placeholder="$t('InitialPrice')"
-                  />
-                </VCol>
-
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.NumberOfMonths"
-                    :label="$t('NumberOfMonths')"
-                    :placeholder="$t('NumberOfMonths')"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.InstallmentPercentage"
-                    :label="$t('InstallmentPercentage')"
-                    :placeholder="$t('InstallmentPercentage')"
-                  />
-                </VCol>
-
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.FinalPrice"
-                    :label="$t('FinalPrice')"
-                    :placeholder="$t('FinalPrice')"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="12"
-                >
-                  <VTextarea
-                    v-model="formData.Notes"
-                    :label="$t('Notes')"
-                    :placeholder="$t('Notes')"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="12"
-                >
-                  <v-file-input
-                    v-model="formData.InstallementImgsFiles"
-                    label="Upload Files"
-                    multiple
-                    @change="handleFileUpload"
-                  ></v-file-input>
-                </VCol>
-
-                <VCol
-                  cols="12"
-                  class="d-flex gap-4"
-                >
-                  <VBtn
-                    type="submit"
-                    class="d-block m-auto btn-edit"
+                
+                  <VCol
+                    cols="12"
+                    md="6"
+                    v-show="checked"
                   >
-                    {{ $t('Add') }}
-                  </VBtn>
-                </VCol>
+                    <VTextField
+                      type="date"
+                      v-model="formData.CreatedDate"
+                      :label="$t('CreatedDate')"
+                      :placeholder="$t('CreatedDate')"
+                    />
+                  </VCol>
+                  <VCol
+                    cols="12"
+                    md="6"
+                    v-show="checked"
+                  >
+                    <VTextField
+                      disabled
+                      v-model="SelectItemCost"
+                      :label="$t('cost')"
+                      :placeholder="$t('cost')"
+                    />
+                  </VCol>
+  
+                  <VCol
+                    cols="12"
+                    md="6"
+                    v-show="checked"
+                  >
+                    <VTextField
+                      disabled
+                      v-model="SelectItemPrice"
+                      :label="$t('price')"
+                      :placeholder="$t('price')"
+                    />
+                  </VCol>
+                  <VCol
+                    cols="12"
+                    md="4"
+                    v-show="checked"
+                  >
+                    <VTextField
+                      v-model="formData.InitialPrice"
+                      :label="$t('InitialPrice')"
+                      :placeholder="$t('InitialPrice')"
+                    />
+                  </VCol>
+  
+                  <VCol
+                    cols="12"
+                    md="4"
+                    v-show="checked"
+                  >
+                    <VTextField
+                      v-model="formData.NumberOfMonths"
+                      :label="$t('NumberOfMonths')"
+                      :placeholder="$t('NumberOfMonths')"
+                    />
+                  </VCol>
+                  <VCol
+                    cols="12"
+                    md="4"
+                    v-show="checked"
+                  >
+                    <VTextField
+                      v-model="formData.InstallmentPercentage"
+                      :label="$t('InstallmentPercentage')"
+                      :placeholder="$t('InstallmentPercentage')"
+                    />
+                  </VCol>
+                  <VCol
+                    cols="12"
+                    md="6"
+                    v-show="checked"
+                    
+                  >
+                    <VTextField
+                      v-model="InstallmentPrice"
+                      :label="$t('InstallmentPrice')"
+                      :placeholder="$t('InstallmentPrice')"
+                    />
+                  </VCol>
+                  <VCol
+                    cols="12"
+                    md="6"
+                    v-show="checked"
+                  >
+                    <VTextField
+                      v-model="formData.FinalPrice"
+                      :label="$t('FinalPrice')"
+                      :placeholder="$t('FinalPrice')"
+                      disabled
+                    />
+                  </VCol>
+                  <VCol
+                    cols="12"
+                    md="12"
+                    v-show="checked"
+                  >
+                    <VTextarea
+                      v-model="formData.Notes"
+                      :label="$t('Notes')"
+                      :placeholder="$t('Notes')"
+                    />
+                  </VCol>
+                  <VCol
+                    cols="12"
+                    md="12"
+                    v-show="checked"
+                  >
+                    <v-file-input
+                      v-model="formData.InstallementImgsFiles"
+                      label="Upload Files"
+                      multiple
+                      @change="handleFileUpload"
+                    ></v-file-input>
+                  </VCol>
+  
+                  <VCol
+                    cols="12"
+                    class="d-flex gap-4"
+                    
+                  >
+                    <VBtn
+                      type="submit"
+                      class="d-block m-auto btn-edit"
+                      v-show="checked"
+                    >
+                      {{ $t('Add') }}
+                    </VBtn>
+                  </VCol>
+
+                
               </VRow>
             </VForm>
           </VCardText>

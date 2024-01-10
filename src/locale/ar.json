@@ -69,5 +69,6 @@
     "NumberOfMonths":"عدد الاشهر",
     "InstallmentPercentage":"نسبة القسط",
     "FinalPrice":"سعر نهائي",
-    "Notes":"ملاحظات"
+    "Notes":"ملاحظات",
+    "InstallmentPrice":"سعر القسط"
 }
