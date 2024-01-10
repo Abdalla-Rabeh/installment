@@ -21,6 +21,7 @@
     "Lbranches":"قائمة الفروع",
     "Lcustomers":"قائمة العملاء",
     "Lproducts":"قائمة المنتجات",
+    "SelectProducts":"اختار المنتج المناسب",
     "tableColumnNo":"رقم",
     "actions":"الاوامر",
     "Edit":"تعديل",
@@ -62,6 +63,11 @@
     "Offerinstallments":"عرض الاقساط",
     "Organizinganother":"تنظيم عقد قسط اخر",
     "totalInitialPrice":"مقدم القسط",
-    "Installmentcontract":"عقد القسط"
-    
+    "Installmentcontract":"عقد القسط",
+    "CreatedDate":"التاريخ",
+    "InitialPrice":"مقدم القسط",
+    "NumberOfMonths":"عدد الاشهر",
+    "InstallmentPercentage":"نسبة القسط",
+    "FinalPrice":"سعر نهائي",
+    "Notes":"ملاحظات"
 }

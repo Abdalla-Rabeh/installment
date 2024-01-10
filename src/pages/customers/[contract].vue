@@ -4,32 +4,97 @@ export default {
   data() {
     return {
       formData: {
-        cardTypeId: 1,
-        name: '',
-        phone: '',
-        sponsorName: '',
-        sponsorPhone: '',
-        statusId: null,
-        address: '',
-        job: '',
-        registerationNumber: '',
+        ClientId: this.$route.params.contract,
+        ProductId: null,
+        CreatedDate: new Date().toISOString().substr(0, 10),
+        InitialPrice: 3000000,
+        NumberOfMonths: 12,
+        InstallmentPercentage: 30,
+        FinalPrice: 100,
+        Notes: 'ملاحظات',
+        InstallementImgsFiles: [],
       },
       cardTypeResponse: [],
       statusResponse: [],
+      items: [],
+      currentPage: 1,
+      pageSize: 1000000000,
     }
   },
-  // mounted() {
-    
-  // },
+  computed: {
+    createdDate() {
+      const CreatedDate = this.formData.CreatedDate
+      return `${CreatedDate.getFullYear()}-${String(CreatedDate.getMonth() + 1).padStart(2, '0')}-${String(
+        CreatedDate.getDate(),
+      ).padStart(2, '0')}  ${String(CreatedDate.getHours()).padStart(2, '0')}:${String(
+        CreatedDate.getMinutes(),
+      ).padStart(2, '0')}:${String(CreatedDate.getSeconds()).padStart(2, '0')}`
+    },
+  },
+  mounted() {
+    this.getData()
+  },
+  watch: {
+    'formData.ProductId'(v) {
+      console.log(v)
+    },
+  },
   methods: {
-    
     async addClient() {
-      await http.post('Installements/AddInstallement', {
-        ...this.formData,
-        
-      }).then(() => {
+      await http
+        .post('Installements/AddInstallement', {
+          ...this.formData,
+        })
+        .then(() => {
+          this.$router.push('/customers')
+        })
+    },
+    async addClient() {
+      const formData = new FormData()
+      formData.append('ProductId', this.formData.ProductId)
+      formData.append('ClientId', this.$route.params.contract)
+      formData.append('CreatedDate', this.formData.CreatedDate)
+      formData.append('InitialPrice', this.formData.InitialPrice)
+      formData.append('NumberOfMonths', this.formData.NumberOfMonths)
+      formData.append('InstallmentPercentage', this.formData.InstallmentPercentage)
+      formData.append('FinalPrice', this.formData.FinalPrice)
+      formData.append('Notes', this.formData.Notes)
+      for (let i = 0; i < this.formData.InstallementImgsFiles.length; i++) {
+        formData.append(
+          'InstallementImgsFiles',
+          this.formData.InstallementImgsFiles[i],
+          this.formData.InstallementImgsFiles[i].name,
+        )
+      }
+
+      try {
+      
+        await http.post('Installements/AddInstallement', formData)
+
+      
         this.$router.push('/customers')
-      })
+      } 
+      catch (error) {
+        console.error('Error adding client:', error)
+        
+      }
+    },
+
+    async getData() {
+      try {
+        const res = await http.post('Product/GetProducts', {
+          pageNumber: this.currentPage,
+          pageSize: this.pageSize,
+          name: '',
+        })
+        this.items = res.data.list.map(item => ({
+          title: item.name,
+          value: item.id,
+        }))
+        // this.totalPages = Math.ceil(res.data.total / this.pageSize);
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
     },
   },
 }
@@ -65,10 +130,23 @@ export default {
                   cols="12"
                   md="6"
                 >
+                  <v-autocomplete
+                    :label="$t('SelectProducts')"
+                    :placeholder="$t('SelectProducts')"
+                    v-model="formData.ProductId"
+                    :items="items"
+                  ></v-autocomplete>
+                </VCol>
+
+                <VCol
+                  cols="12"
+                  md="6"
+                >
                   <VTextField
-                    v-model="formData.name"
-                    :label="$t('name')"
-                    :placeholder="$t('name')"
+                    type="date"
+                    v-model="formData.CreatedDate"
+                    :label="$t('CreatedDate')"
+                    :placeholder="$t('CreatedDate')"
                   />
                 </VCol>
 
@@ -77,9 +155,9 @@ export default {
                   md="6"
                 >
                   <VTextField
-                    v-model="formData.phone"
-                    :label="$t('phone')"
-                    :placeholder="$t('phone')"
+                    v-model="formData.InitialPrice"
+                    :label="$t('InitialPrice')"
+                    :placeholder="$t('InitialPrice')"
                   />
                 </VCol>
 
@@ -88,9 +166,19 @@ export default {
                   md="6"
                 >
                   <VTextField
-                    v-model="formData.job"
-                    :label="$t('job')"
-                    :placeholder="$t('job')"
+                    v-model="formData.NumberOfMonths"
+                    :label="$t('NumberOfMonths')"
+                    :placeholder="$t('NumberOfMonths')"
+                  />
+                </VCol>
+                <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.InstallmentPercentage"
+                    :label="$t('InstallmentPercentage')"
+                    :placeholder="$t('InstallmentPercentage')"
                   />
                 </VCol>
 
@@ -99,43 +187,33 @@ export default {
                   md="6"
                 >
                   <VTextField
-                    v-model="formData.registerationNumber"
-                    :label="$t('registerationNumber')"
-                    :placeholder="$t('registerationNumber')"
+                    v-model="formData.FinalPrice"
+                    :label="$t('FinalPrice')"
+                    :placeholder="$t('FinalPrice')"
                   />
                 </VCol>
                 <VCol
                   cols="12"
-                  md="6"
+                  md="12"
                 >
-                  <VTextField
-                    v-model="formData.address"
-                    :label="$t('address')"
-                    :placeholder="$t('address')"
-                  />
-                </VCol>
-                
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VSelect
-                    v-model="formData.cardTypeId"
-                    :label="$t('cardTypeId')"
-                    :items="cardTypeResponse"
+                  <VTextarea
+                    v-model="formData.Notes"
+                    :label="$t('Notes')"
+                    :placeholder="$t('Notes')"
                   />
                 </VCol>
                 <VCol
                   cols="12"
-                  md="6"
+                  md="12"
                 >
-                  <VSelect
-                    v-model="formData.statusId"
-                    :label="$t('statusId')"
-                    :items="statusResponse"
-                  />
+                  <v-file-input
+                    v-model="formData.InstallementImgsFiles"
+                    label="Upload Files"
+                    multiple
+                    @change="handleFileUpload"
+                  ></v-file-input>
                 </VCol>
-                
+
                 <VCol
                   cols="12"
                   class="d-flex gap-4"
