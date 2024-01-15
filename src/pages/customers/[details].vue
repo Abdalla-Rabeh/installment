@@ -12,19 +12,28 @@ export default {
   },
   mounted() {
     this.getData()
-    console.log(this.$route.params);
+    await http.get(`Installements/GetClientInstallement?clientId=${this.$route.params.details}`).then(res => {
+        this.rows = res.data.data.installments
+        this.store.PaymentData = res.data.data.installments
+        this.totalInitialPrice = res.data.data.totalInitialPrice
+        this.totalPaidPrice = res.data.data.totalPaidPrice
+        this.totalUnpaidPrice = res.data.data.totalUnpaidPrice
+      })
   },
   methods: {
     async getData() {
       await http.get(`Installements/GetClientInstallement?clientId=${this.$route.params.details}`).then(res => {
         this.rows = res.data.data.installments
+        this.store.PaymentData = res.data.data.installments
         this.totalInitialPrice = res.data.data.totalInitialPrice
         this.totalPaidPrice = res.data.data.totalPaidPrice
         this.totalUnpaidPrice = res.data.data.totalUnpaidPrice
       })
+      
     },
     details(id){
-    this.$router.push({name :"customers-contract" , params: { contract: id } })
+    this.$router.push({name :"customers-payment" , params: { payment: 200 }}) //  , params: { payment: id }
+
     },
     addContract(){
       this.$router.push({name :"customers-contract" , params: { contract: this.$route.params.details } })

@@ -266,10 +266,10 @@ export default {
                 <span v-if="props.column.field == 'actions'">
                   <button
                     type="button"
-                    class="btn bg-success on-secondary me-2 w-100"
+                    class="btn me-2 w-100"
                     @click="editRow(props.row)"
                   >
-                    {{ $t('Edit') }}
+                  <img src="../assets/pencil-alt.svg" alt="">
                   </button>
                   <!-- <button
                     class="btn bg-danger me-2"

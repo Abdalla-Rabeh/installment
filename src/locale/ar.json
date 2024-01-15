@@ -70,5 +70,8 @@
     "InstallmentPercentage":"نسبة القسط",
     "FinalPrice":"سعر نهائي",
     "Notes":"ملاحظات",
-    "InstallmentPrice":"سعر القسط"
+    "InstallmentPrice":"سعر القسط",
+    "Payment":"دفع",
+    "Refund":"استرجاع",
+    "DeleteIns":"حذف العقد"
 }

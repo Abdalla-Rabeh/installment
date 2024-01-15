@@ -108,7 +108,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
         @click="toggleLocale"
       >
         <VIcon
-          icon="mdi-web"
+          icon="mdi-translate"
           size="24"
         />
       </VBtn>

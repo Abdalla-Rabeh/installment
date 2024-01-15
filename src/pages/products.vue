@@ -205,7 +205,7 @@ export default {
                 <!-- 👉 First Name -->
                 <VCol
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <VTextField
                     v-model="updateData.name"
@@ -217,7 +217,7 @@ export default {
                 <!-- 👉 Last Name -->
                 <VCol
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <VTextField
                     v-model="updateData.priceBeforIncrease"
@@ -227,7 +227,7 @@ export default {
                 </VCol>
                 <VCol
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <VTextField
                     v-model="updateData.price"
@@ -238,7 +238,7 @@ export default {
                 <!-- 👉 Email -->
                 <VCol
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <VTextField
                     v-model="updateData.count"
@@ -255,7 +255,7 @@ export default {
                 >
                   <VBtn
                     type="submit"
-                    class="d-block m-auto btn-edit bg-success"
+                    class="d-block m-auto btn-edit"
                   >
                     {{ $t('Edit') }}
                   </VBtn>
@@ -279,7 +279,7 @@ export default {
                 <!-- 👉 First Name -->
                 <VCol
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <VTextField
                     v-model="formData.name"
@@ -291,7 +291,7 @@ export default {
                 <!-- 👉 Last Name -->
                 <VCol
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <VTextField
                     v-model="formData.priceBeforIncrease"
@@ -301,7 +301,7 @@ export default {
                 </VCol>
                 <VCol
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <VTextField
                     v-model="formData.price"
@@ -312,7 +312,7 @@ export default {
                 <!-- 👉 Email -->
                 <VCol
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <VTextField
                     v-model="formData.count"
@@ -364,16 +364,18 @@ export default {
                 <span v-if="props.column.field == 'actions'">
                   <button
                     type="button"
-                    class="btn bg-success on-secondary me-2"
+                    class="btn  me-2"
                     @click="editRow(props.row)"
                   >
-                    {{ $t('Edit') }}
+                  <img src="../assets/pencil-alt.svg" alt="">
+                    
                   </button>
                   <button
-                    class="btn bg-danger me-2"
+                    class="btn me-2"
                     @click="deleteRow(props.row.id, props.index)"
                   >
-                    {{ $t('Delete') }}
+                  <img src="../assets/trash.svg" alt="">
+                    
                   </button>
                 </span>
                 <span v-else>

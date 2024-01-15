@@ -9,7 +9,9 @@ export const GetClient = defineStore('ClientDataShera', {
 export const Products = defineStore('products', {
   state: () => ({
     ProductsData: {},
+    PaymentData:{},
   }),
   
 });
+
 

@@ -265,7 +265,7 @@ export default {
             </h5>
             <div class="card-options">
               <button
-                class="btn bg-success"
+                class="btn on-secondary text-success"
                 @click="add"
               >
                 {{ $t('Addcustomer') }}
@@ -429,6 +429,7 @@ export default {
                   md="6"
                 >
                   <VTextField
+                  
                     v-model="formData.phone"
                     :label="$t('phone')"
                     :placeholder="$t('phone')"
