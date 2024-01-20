@@ -33,19 +33,19 @@ export default {
     console.log(this.store.PaymentData)
   },
   methods: {
-    getData() {
-      // await http.get(`Installements/GetClientInstallement?clientId=${this.$route.params.details}`).then(res => {
-      // })
-      this.rows = this.store.PaymentData;
-      this.rows.forEach(el => {
-          el.clientInstallementDetailsResponses.forEach(innerItem => {
-           this.fake = innerItem
-           console.log(this.fake)
-          })
-        })
-      ;(this.creationDate = this.items.creationDate),
-        (this.finalPrice = this.items.finalPrice),
-        (this.initialPrice = this.items.initialPrice),
+   async getData() {
+      await http.get(`Installements/GetInstallementDetailsById?id=${this.$route.params.payment}`).then(res => {
+        this.rows = res.data.data.clientInstallementDetailsResponses
+        console.log(this.rows)
+        // this.rows.forEach(el => {
+          //     el.clientInstallementDetailsResponses.forEach(innerItem => {
+            //      this.fake = innerItem
+            //      console.log(this.fake)
+            //     })
+            //   })
+            ;(this.creationDate = this.items.creationDate),
+            (this.finalPrice = this.items.finalPrice),
+            (this.initialPrice = this.items.initialPrice),
         (this.installementPrice = this.items.installementPrice),
         (this.installmentPercentage = this.items.installmentPercentage),
         (this.notes = this.items.notes),
@@ -56,7 +56,8 @@ export default {
         (this.profit = this.items.profit),
         (this.restPrice = this.items.restPrice),
         (this.totalPaidPrice = this.items.totalPaidPrice)
-    },
+      })
+      },
   },
 }
 </script>
@@ -110,14 +111,15 @@ export default {
         <tr>
           <th class="text-center">{{ $t('name') }}</th>
           <th class="text-center">{{ $t('price') }}</th>
-          <th class="text-center">{{ $t('name') }}</th>
-          <th class="text-center">{{ $t('name') }}</th>
+          <th class="text-center">{{ $t('Date') }}</th>
+          <th class="text-center">{{ $t('statusId') }}</th>
           <th class="text-center">{{ $t('actions') }}</th>
         </tr>
       </thead>
       <tbody>
         <tr
-          
+          v-for="(fake, index) in rows" 
+          :key="index"
         >
           <td class="text-center">{{ fake.installementNumber }}</td>
           <td class="text-center">{{ fake.price }}</td>

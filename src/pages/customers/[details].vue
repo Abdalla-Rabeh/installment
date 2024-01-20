@@ -12,13 +12,7 @@ export default {
   },
   mounted() {
     this.getData()
-    await http.get(`Installements/GetClientInstallement?clientId=${this.$route.params.details}`).then(res => {
-        this.rows = res.data.data.installments
-        this.store.PaymentData = res.data.data.installments
-        this.totalInitialPrice = res.data.data.totalInitialPrice
-        this.totalPaidPrice = res.data.data.totalPaidPrice
-        this.totalUnpaidPrice = res.data.data.totalUnpaidPrice
-      })
+   
   },
   methods: {
     async getData() {
@@ -32,7 +26,7 @@ export default {
       
     },
     details(id){
-    this.$router.push({name :"customers-payment" , params: { payment: 200 }}) //  , params: { payment: id }
+    this.$router.push({name :"customers-payment" , params: { payment: id }}) //  , params: { payment: id }
 
     },
     addContract(){
