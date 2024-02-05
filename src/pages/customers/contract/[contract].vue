@@ -1,6 +1,6 @@
 <script>
-import http from '../../http'
-import { Products } from '../../store/index.js'
+import http from '../../../http'
+import { Products } from '../../../store/index.js'
 export default {
   data() {
     return {

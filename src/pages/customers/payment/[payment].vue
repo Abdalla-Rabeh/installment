@@ -1,6 +1,6 @@
 <script>
-import { GetClient } from '../../store/index.js'
-import http from '../../http.js'
+import { GetClient } from '../../../store/index.js'
+import http from '../../../http.js'
 export default {
   data() {
     return {

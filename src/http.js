@@ -5,7 +5,7 @@ import 'sweetalert2/src/sweetalert2.scss';
 const currencyId = localStorage.getItem('currencyId');
 
 const instance = axios.create({
-  baseURL: "http://instinstinst-001-site1.htempurl.com/api/",
+  baseURL: "https://instinstinst-001-site1.htempurl.com/api/",
   
   // https://0f8b-196-221-165-145.ngrok-free.app
   // http://akaminst-001-site1.gtempurl.com

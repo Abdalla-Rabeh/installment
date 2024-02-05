@@ -17,8 +17,8 @@ export default {
       loadingFormEdit:false,
       isPasswordVisible:false,
       formData:{
-        userName: 'Abdallah',
-        password: '12312300',
+        userName: '',
+        password: '',
         
       },
     }

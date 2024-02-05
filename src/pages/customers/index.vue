@@ -204,7 +204,9 @@ export default {
       this.store.ClientData = data
       console.log(this.store.ClientData)
       console.log(this.store)
-      this.$router.push({name :"customers-details" , params: { details: data.id } })
+      console.log(this.$route)
+      console.log(this.$router)
+      this.$router.push({name :"customers-details-details" , params: { details: data.id } })
     },
     Serach() {
       this.resetPagination()

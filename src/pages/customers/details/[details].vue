@@ -1,6 +1,6 @@
 <script>
-import { GetClient } from '../../store/index.js'
-import http from '../../http.js'
+import { GetClient } from '../../../store/index.js'
+import http from '../../../http.js'
 export default {
   data() {
     return {
@@ -8,6 +8,7 @@ export default {
       totalInitialPrice: '',
       totalPaidPrice: '',
       totalUnpaidPrice: '',
+      ClientData:{},
     }
   },
   mounted() {
@@ -21,16 +22,21 @@ export default {
         this.store.PaymentData = res.data.data.installments
         this.totalInitialPrice = res.data.data.totalInitialPrice
         this.totalPaidPrice = res.data.data.totalPaidPrice
-        this.totalUnpaidPrice = res.data.data.totalUnpaidPrice
+        this.totalUnpaidPrice = res.data.data.totalUnpaidPrice;
+       http.get(`Clients/GetClientById?id=${this.$route.params.details}`).then((res)=> {
+        this.ClientData = res.data.data
+        
+      })
       })
       
     },
     details(id){
-    this.$router.push({name :"customers-payment" , params: { payment: id }}) //  , params: { payment: id }
+    this.$router.push({name :"customers-payment-payment" , params: { payment: id }}) //  , params: { payment: id }
 
     },
     addContract(){
-      this.$router.push({name :"customers-contract" , params: { contract: this.$route.params.details } })
+      console.log(this.$router)
+      this.$router.push({name :"customers-contract-contract" , params: { contract: this.$route.params.details } })
     }
   },
 }
@@ -44,35 +50,35 @@ export default {
     >
       <div class="row">
         <div class="col-lg-4">
-          <div class="p-2 font-weight-bold">{{ $t('name') }} : {{ store.ClientData.name }}</div>
-          <div class="p-2 font-weight-bold">{{ $t('address') }} : {{ store.ClientData.address }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('name') }} : {{ ClientData.name }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('address') }} : {{ ClientData.address }}</div>
           <div class="p-2 font-weight-bold">
-            {{ $t('cardTypeId') }} : {{ store.ClientData.cardType && store.ClientData.cardType.type }}
+            {{ $t('cardTypeId') }} : {{ ClientData.cardType && ClientData.cardType.type }}
           </div>
           <div class="p-2 font-weight-bold">
-            {{ $t('statusId') }} : {{ store.ClientData.clientStatus && store.ClientData.clientStatus.text }}
+            {{ $t('statusId') }} : {{ ClientData.clientStatus && ClientData.clientStatus.text }}
           </div>
-          <div class="p-2 font-weight-bold">{{ $t('job') }} : {{ store.ClientData.job }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('job') }} : {{ ClientData.job }}</div>
         </div>
         <div class="col-lg-4">
           <div class="p-2 font-weight-bold">
-            {{ $t('registerationNumber') }} : {{ store.ClientData.registerationNumber }}
+            {{ $t('registerationNumber') }} : {{ ClientData.registerationNumber }}
           </div>
           <div class="p-2 font-weight-bold">
-            {{ $t('numberOfActiveInstallements') }} : {{ store.ClientData.numberOfActiveInstallements }}
+            {{ $t('numberOfActiveInstallements') }} : {{ ClientData.numberOfActiveInstallements }}
           </div>
-          <div class="p-2 font-weight-bold">{{ $t('totalPaidPrice') }} : {{ store.ClientData.totalPaidPrice }}</div>
-          <div class="p-2 font-weight-bold">{{ $t('totalUnpaidPrice') }} : {{ store.ClientData.totalUnpaidPrice }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('totalPaidPrice') }} : {{ ClientData.totalPaidPrice }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('totalUnpaidPrice') }} : {{ ClientData.totalUnpaidPrice }}</div>
         </div>
         <div class="col-lg-4">
-          <div class="p-2 font-weight-bold">{{ $t('sponsorName') }} : {{ store.ClientData.sponsorName }}</div>
-          <div class="p-2 font-weight-bold">{{ $t('sponsorPhone') }} : {{ store.ClientData.sponsorPhone }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('sponsorName') }} : {{ ClientData.sponsorName }}</div>
+          <div class="p-2 font-weight-bold">{{ $t('sponsorPhone') }} : {{ ClientData.sponsorPhone }}</div>
         </div>
       </div>
     </div>
     <div
       class="container pls mt-2"
-      v-if="store.ClientData"
+      v-if="ClientData"
     >
       <div class="row">
         <div class="col-lg-4">
