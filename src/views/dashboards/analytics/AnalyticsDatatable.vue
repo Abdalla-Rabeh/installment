@@ -131,7 +131,7 @@ const usreList = data
 </script>
 
 <template>
-  <VCard>
+  <VCard style="display: none;">
     <VTable
       :headers="headers"
       :items="usreList"

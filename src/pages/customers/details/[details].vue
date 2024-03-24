@@ -103,7 +103,7 @@ export default {
           :key="item.name"
         >
           <td class="text-center">{{ item.productName }}</td>
-          <td class="text-center"><button class="btn bg-primary on-secondary" @click="details(item.id)">{{ $t('details') }}</button></td>
+          <!-- <td class="text-center"><button class="btn bg-primary on-secondary" @click="details(item.id)">{{ $t('details') }}</button></td> -->
         </tr>
       </tbody>
     </v-table>

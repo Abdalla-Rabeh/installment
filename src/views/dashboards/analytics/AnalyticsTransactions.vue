@@ -2,25 +2,25 @@
 const statistics = [
   {
     title: 'Sales',
-    stats: '245k',
+    stats: '0k',
     icon: 'mdi-trending-up',
     color: 'primary',
   },
   {
     title: 'Customers',
-    stats: '12.5k',
+    stats: '0k',
     icon: 'mdi-account-outline',
     color: 'success',
   },
   {
     title: 'Product',
-    stats: '1.54k',
+    stats: '0k',
     icon: 'mdi-cellphone-link',
     color: 'warning',
   },
   {
     title: 'Revenue',
-    stats: '$88k',
+    stats: '$0k',
     icon: 'mdi-currency-usd',
     color: 'info',
   },
@@ -51,7 +51,7 @@ const statistics = [
 
     <VCardText>
       <h6 class="text-sm mb-12">
-        <span>Total 48.5% Growth 😎</span>
+        <span>Total 0% Growth 😎</span>
         <span class="font-weight-regular"> this month</span>
       </h6>
 

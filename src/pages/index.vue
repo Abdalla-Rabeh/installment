@@ -14,16 +14,16 @@ const totalProfit = {
   title: 'Total Profit',
   color: 'secondary',
   icon: 'mdi-poll',
-  stats: '$25.6k',
-  change: 42,
+  stats: '$0k',
+  change: 0,
   subtitle: 'Weekly Project',
 }
 const newProject = {
   title: 'New Project',
   color: 'primary',
   icon: 'mdi-briefcase-variant-outline',
-  stats: '862',
-  change: -18,
+  stats: '0',
+  change: -0,
   subtitle: 'Yearly Project',
 }
 </script>

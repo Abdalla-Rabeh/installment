@@ -1,6 +1,6 @@
 <script setup>
-import VueApexCharts from 'vue3-apexcharts'
-import { useTheme } from 'vuetify'
+import VueApexCharts from 'vue3-apexcharts';
+import { useTheme } from 'vuetify';
 
 const vuetifyTheme = useTheme()
 const currentTheme = computed(() => vuetifyTheme.current.value.colors)
@@ -77,7 +77,7 @@ const chartOptions = computed(() => {
   <VCard>
     <VCardText>
       <h6 class="text-h6">
-        2,856
+        0
       </h6>
 
       <VueApexCharts

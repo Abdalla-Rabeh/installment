@@ -8,28 +8,28 @@ const earnings = [
     avatar: zipcar,
     title: 'Zipcar',
     subtitle: 'Vuejs, React & HTML',
-    amount: '$24,895.65',
+    amount: '$0',
     progress: 'primary',
   },
   {
     avatar: bitbank,
     title: 'Bitbank',
     subtitle: 'Sketch, Figma & XD',
-    amount: '$8,6500.20',
+    amount: '$0',
     progress: 'info',
   },
   {
     avatar: aviato,
     title: 'Aviato',
     subtitle: 'HTML & Anguler',
-    amount: '$1,2450.80',
+    amount: '$0',
     progress: 'secondary',
   },
 ]
 </script>
 
 <template>
-  <VCard>
+  <VCard >
     <VCardItem>
       <VCardTitle>Total Earning</VCardTitle>
 
@@ -53,7 +53,7 @@ const earnings = [
     <VCardText class="pt-4">
       <div class="d-flex align-center">
         <h4 class="text-h4 me-2">
-          $24,895
+          $0,00
         </h4>
 
         <span class="text-success">
@@ -61,10 +61,10 @@ const earnings = [
             size="30"
             icon="mdi-menu-up"
           />
-          <span>10%</span>
+          <span>0%</span>
         </span>
       </div>
-      <span class="text-xs">Compared to $84,325 last year</span>
+      <span class="text-xs">Compared to $0,00 last year</span>
 
       <VList class="card-list mt-9">
         <VListItem

@@ -44,7 +44,7 @@ const salesByCountries = [
 </script>
 
 <template>
-  <VCard>
+  <VCard style="display: none;">
     <VCardItem>
       <VCardTitle>Sales by Countries</VCardTitle>
 

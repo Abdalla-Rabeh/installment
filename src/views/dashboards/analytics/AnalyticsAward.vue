@@ -18,9 +18,9 @@ const triangleBg = computed(() => {
   >
     <VCardText>
       <h5 class="text-2xl font-weight-medium text-primary">
-        $42.8k
+        $0k
       </h5>
-      <p>78% of target 🚀</p>
+      <p>0% of target 🚀</p>
       <VBtn size="small">
         View Sales
       </VBtn>

@@ -16,10 +16,10 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token') !== null
 
   if (isAuthenticated && to.name === 'login') {
-    // If already authenticated and trying to access the login page, redirect to home or another authorized route
+    
     next('/')
   } else if (!isAuthenticated && to.name !== 'login') {
-    // If not authenticated and trying to access a route other than login, redirect to login
+    
     next('/login')
   } else {
     // Continue with the navigation

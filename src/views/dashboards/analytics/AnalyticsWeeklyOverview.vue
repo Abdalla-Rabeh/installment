@@ -127,10 +127,10 @@ const series = [{
 
       <div class="d-flex align-center mb-3">
         <h5 class="text-h5 me-4">
-          45%
+          0%
         </h5>
         <p>
-          Your sales performance is 45% 😎 better compared to last month
+          Your sales performance is 0% 😎 better compared to last month
         </p>
       </div>
 

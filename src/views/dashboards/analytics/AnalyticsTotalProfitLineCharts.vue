@@ -75,7 +75,7 @@ const chartOptions = computed(() => {
   <VCard>
     <VCardText>
       <h6 class="text-h6">
-        $86.4k
+        $0.0k
       </h6>
       <VueApexCharts
         type="line"
